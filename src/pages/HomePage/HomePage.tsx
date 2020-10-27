@@ -1,13 +1,10 @@
 import React from 'react';
-import s from './HomePage.module.scss';
+import './HomePage.scss';
 
 function HomePage() {
     return (
-        <div className={`${[s.homePage, 'u-underline'].join(' ')}`}>
+        <div className="homePage">
             I am HomePage
-            <div className={`${s.departments}`}>
-                HomePage departments
-            </div>
         </div>
     );
 }
