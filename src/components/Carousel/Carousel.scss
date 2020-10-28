@@ -1,0 +1,85 @@
+$carousel-slider-grid-gap: 1rem;
+
+.cssPrefix {
+    &__carousel {
+        overflow-x: hidden; // overflowX due to transform: rotate(225deg) of .navigate-to-nextSlide
+
+        margin-top: 1rem;
+        background: green;
+        display: grid;
+        grid-template-columns: [navigate-to-previousSlide-begin] min-content [navigate-to-previousSlide-end slider-begin] 1fr [slider-end navigate-to-nextSlide-begin] min-content [navigate-to-nextSlide-end];
+
+        &-nav {
+            display: block;
+            border: none;
+            outline: none;
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 50%;
+            margin: 0 .25rem;
+
+            cursor: pointer;
+        }
+
+        &-nav.navigate-to-previousSlide, &-nav.navigate-to-nextSlide {
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            &::after {
+                content: '';
+                display: block;
+                width: .75rem;
+                height: .75rem;
+                border-bottom: 2px solid blue;
+                border-left: 2px solid blue;
+            }
+        }
+        
+        &-nav.navigate-to-previousSlide {
+            grid-column: navigate-to-previousSlide-begin / navigate-to-previousSlide-end;
+            align-self: center;
+            transform: rotate(45deg);
+        }
+
+        &-slider-tube {
+            grid-column: slider-begin / slider-end;
+            overflow-x: hidden;
+        }
+
+        &-slider {
+            width: 100%;
+            display: flex;
+            flex-wrap: nowrap;
+            /*margin-left: -100%;*/ // use js
+            transition: all .5s;
+
+            // https://css-tricks.com/can-get-pretty-far-making-slider-just-html-css/
+            // swipe smoothly on WebKit based mobile browsers
+        }
+
+        &-nav.navigate-to-nextSlide {
+            grid-column: navigate-to-nextSlide-begin / navigate-to-nextSlide-end;
+            align-self: center;
+            transform: rotate(225deg);
+        }
+
+        &-slide-group {
+            min-width: 100%;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-gap: $carousel-slider-grid-gap;
+        }
+
+        &-slide {
+            flex: 1 1 auto;
+        }
+        &-slide:first-child {
+            background: lightblue;
+        }
+        &-slide:last-child {
+            background: lightgreen;
+        }
+    }
+}
