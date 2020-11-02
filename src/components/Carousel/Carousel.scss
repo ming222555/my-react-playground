@@ -41,6 +41,13 @@ $carousel-slider-grid-gap: 1rem;
             grid-column: navigate-to-previousSlide-begin / navigate-to-previousSlide-end;
             align-self: center;
             transform: rotate(45deg);
+
+            &.nav-left-visible {
+                visibility: visible;
+            }
+            &.nav-left-hidden {
+                visibility: hidden;
+            }
         }
 
         &-slider-tube {
