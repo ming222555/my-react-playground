@@ -5,10 +5,11 @@ import Carousel from 'components/Carousel/Carousel';
 function HomePage() {
     return (
         <div className="homePage">
-            I am HomePage
+            I am HomePage 
             <Carousel 
-                breakpoints="768:4,1200:6" 
-                itemtags={[<p>111</p>, <p>222</p>, <p>333</p>, <p>555</p>, <p>555</p>, <p>666</p>]}
+                breakpoints="768:7,1200:6" 
+                items={[<p key="111">111</p>, <p key="222">222</p>, <p key="333">333</p>, <p key="444">444</p>, <p key="555">555</p>, <p key="666">666</p>, <p key="777">777</p>]} 
+                itemIDs={['111', '222', '333', '444', '555', '666', '777']}
             />
             {/* <Carousel /> */}
         </div>

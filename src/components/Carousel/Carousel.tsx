@@ -3,22 +3,23 @@ import './Carousel.scss';
 
 export interface PageProps {
     breakpoints: string; /* e.g. "768:4,1200:2" which says 
-                            "at viewport >= 768px, no. of slides to show in carousel is 4",
-                            "at viewport >= 1200px, no. of slides to show in carousel is 2"
+                            "at viewport >= 768px, no. of items to show in carousel is 4",
+                            "at viewport >= 1200px, no. of items to show in carousel is 2"
                             *** IMPORTANT! THE viewport SIZES (px) ARE ASSUMED TO BE IN INCREASING ORDER! ***
                         */
-    itemtags: {}[]; /* array of jsx objects 
+    items: {}[]; /* array of jsx objects 
                        e.g. [
                            <MyCatalogItem key="123" id="123" name="tshirt" />,
                            <MyCatalogItem key="456" id="456" name="jacket" />
                        ]
                     */
+    itemIDs: string[];
     cssprefix?: string;
 }
 
 interface IBreakpoints {
     breakpointPixels: number; // pixels
-    slidesPerGroup: number;
+    itemsPerGroup: number;
 }
 
 enum NavDirection {
@@ -26,12 +27,15 @@ enum NavDirection {
     Next
 }
 
-function getNumberOfSlideGroups(winWidth: number, arrayBreakpoints: IBreakpoints[], numberOfItems: number): number {
-    let ret = 0;
-    for (let i = arrayBreakpoints.length - 1; i >= 0 ; i++) {
+function getNumberOfItemGroups(winWidth: number, arrayBreakpoints: IBreakpoints[], numberOfItems: number): number {
+    let ret = numberOfItems;
+    for (let i = arrayBreakpoints.length - 1; i >= 0 ; i--) {
         if (winWidth >= arrayBreakpoints[i].breakpointPixels) {
-            const slidesPerGroup = arrayBreakpoints[i].slidesPerGroup;
-            ret = Math.ceil(numberOfItems / slidesPerGroup);
+            const itemsPerGroup = arrayBreakpoints[i].itemsPerGroup;
+            ret = Math.ceil(numberOfItems / itemsPerGroup);
+
+            console.log('getNumberOfItemGroups winWidth',winWidth);
+            console.log('getNumberOfItemGroups winWidth',arrayBreakpoints[i].breakpointPixels);
 
             break;
         }
@@ -39,12 +43,11 @@ function getNumberOfSlideGroups(winWidth: number, arrayBreakpoints: IBreakpoints
     return ret;
 }
 
-function getSlidesPerGroup(winWidth: number, arrayBreakpoints: IBreakpoints[]): number {
-    let ret = 0;
-    for (let i = arrayBreakpoints.length - 1; i >= 0 ; i++) {
+function getItemsPerGroup(winWidth: number, arrayBreakpoints: IBreakpoints[]): number {
+    let ret = 1;
+    for (let i = arrayBreakpoints.length - 1; i >= 0 ; i--) {
         if (winWidth >= arrayBreakpoints[i].breakpointPixels) {
-            ret = arrayBreakpoints[i].slidesPerGroup;
-
+            ret = arrayBreakpoints[i].itemsPerGroup;
             break;
         }
     }
@@ -57,102 +60,105 @@ function setupArrayBreakpoints(breakpoints: string): IBreakpoints[] {
     for (let i = 0; i < arry.length; i++) {
         const pair = arry[i].split(":");
         const breakpointPixels = parseInt(pair[0]);
-        const slidesPerGroup = parseInt(pair[1]);
-        ret.push({breakpointPixels, slidesPerGroup});
+        const itemsPerGroup = parseInt(pair[1]);
+        ret.push({breakpointPixels, itemsPerGroup});
     }
     return ret;
 }
 
-function recomputeAndSetCurrSlideGroupForNavOnclick(navi: NavDirection, winWidth: number, arrayBreakpoints: IBreakpoints[], numberOfItems: number, currSlideGroup: number, setter: ( slideGroup: number) => any) {
-    const num = getNumberOfSlideGroups( winWidth, arrayBreakpoints, numberOfItems);
-
-    let newSlideGroup = 0;
+function recomputeAndSetPosItemGroupForNavOnclick(navi: NavDirection, winWidth: number, arrayBreakpoints: IBreakpoints[], numberOfItems: number, posItemGroup: number, itemsPerGroup: number, setter: ( posItemGroupConcatItemsPerGroup: string) => any) {
+    const num = getNumberOfItemGroups( winWidth, arrayBreakpoints, numberOfItems);
+console.log('recomputeAndSetPosItemGroupForNavOnclick num',num);
+    let newPosItemGroup = 0;
     if (navi == NavDirection.Next) {
-        newSlideGroup = (currSlideGroup + 1) % num
+        newPosItemGroup = (posItemGroup + 1) % num
     } else {
-        if ( currSlideGroup == 0) {
+        if ( posItemGroup == 0) {
             return;
         }
-        newSlideGroup = (currSlideGroup - 1) % num
+        newPosItemGroup = (posItemGroup - 1) % num
     }
-    setter( newSlideGroup);
+    setter( newPosItemGroup + ',' + itemsPerGroup);
 }
 
-function recomputeAndSetCurrSlideGroupForWindowResize() {
-    // ... compute newcurrSlideGroup,
-    // ... setCurrSlideGroup(newcurrSlideGroup);
+function recomputeAndSetPosItemGroupForWindowResize() {
+    // ... compute newPosItemGroup,
+    // ... setPosItemGroup(newPosItemGroup);
 };
 
-function recomputeCurrSlideGroupForNewItemstag(prevItemtags: {}[], itemtags: {}[]): number {
-    // ... compute newcurrSlideGroup,
-    // return newcurrSlideGroup;
+function recomputePosItemGroupForNewItemstag(prevItems: {}[], items: {}[]): number {
+    // ... compute newPosItemGroup,
+    // return newPosItemGroup;
     return 100;
 }
 
 
-export default function Carousel({ breakpoints, itemtags, cssprefix="cssprefix" }: PageProps) {
-    const [curr_slide_group, setCurrSlideGroup] = useState(-1);
-    const prevItemtagsRef: React.MutableRefObject<{}[]> = useRef(null as any);
+export default function Carousel({ breakpoints, items, itemIDs, cssprefix="cssprefix" }: PageProps) {
+    const [pos_item_group, setPosItemGroup] = useState(-1);
+    const prevItemsRef: React.MutableRefObject<{}[]> = useRef(null as any);
     const arrayBreakpointsRef: React.MutableRefObject<IBreakpoints[]> = useRef([]);
-    const prevSlidesPerGroupRef: React.MutableRefObject<number> = useRef(0);
-    
-    /*const recomputeAndSetCurrSlideGroupForNavOnclick = (navi: NavDirection) => {
-        const num_slide_groups = getNumberOfSlideGroups();
+    const prevItemsPerGroupRef: React.MutableRefObject<number> = useRef(0);
 
-        let newSlideGroup = 0;
+    const [posItemGroupConcatItemsPerGroup, setPosItemGroupConcatItemsPerGroup] = useState(','); // comma delimiter
+    const prevPosItemGroupConcatItemsPerGroupRef: React.MutableRefObject<string> = useRef(',');
+    
+    /*const recomputeAndSetPosItemGroupForNavOnclick = (navi: NavDirection) => {
+        const num_item_groups = getNumberOfItemGroups();
+
+        let newPosItemGroup = 0;
         if (navi == NavDirection.Next) {
-            newSlideGroup = (curr_slide_group + 1) % num_slide_groups
+            newPosItemGroup = (pos_item_group + 1) % num_item_groups
         } else {
-            if ( curr_slide_group == 0) {
+            if ( pos_item_group == 0) {
                 return;
             }
-            newSlideGroup = (curr_slide_group - 1) % num_slide_groups
+            newPosItemGroup = (pos_item_group - 1) % num_item_groups
         }
-        let pct_shift = (-100 * newSlideGroup) + '%';
-        setCurrSlideGroup( newSlideGroup);
+        let pct_shift = (-100 * newPosItemGroup) + '%';
+        setPosItemGroup( newPosItemGroup);
     };*/
 
-    /*const recomputeAndSetCurrSlideGroupForWindowResize = () => {
-        // ... compute newcurrSlideGroup,
-        // ... setCurrSlideGroup(newcurrSlideGroup);
+    /*const recomputeAndSetPosItemGroupForWindowResize = () => {
+        // ... compute newPosItemGroup,
+        // ... setPosItemGroup(newPosItemGroup);
     };*/
 
-    /*const recomputeCurrSlideGroupForNewItemstag = (prevItemtagsRef: {}[], itemtags: {}[]): number => {
-        // ... compute newcurrSlideGroup,
-        // return newcurrSlideGroup;
+    /*const recomputePosItemGroupForNewItemstag = (prevItemsRef: {}[], items: {}[]): number => {
+        // ... compute newPosItemGroup,
+        // return newPosItemGroup;
         return 100;
     }*/
     
     // useEffect(() => {
-    //     if (num_slide_groups < 0) {
+    //     if (num_item_groups < 0) {
     //         /* At mounted.
-    //         Calc num_slide_groups.
-    //         Call setNumSlideGroups() to redraw.
+    //         Calc num_item_groups.
+    //         Call setNumberOfItemGroups() to redraw.
     //         steps ...
-    //           1. Initialize array (arrayBreakpointsRef) of {breakpointPixels, slidesPerGroup} objects from prop breakpoints.
+    //           1. Initialize array (arrayBreakpointsRef) of {breakpointPixels, itemsPerGroup} objects from prop breakpoints.
     //              see interface PageProps for example prop breakpoints.
-    //           2. Read off slidesPerGroup from array by using window.innerWidth to determine object key breakpointPixels.
-    //           3. Calc number of slide_groups from slidesPerGroup and prop itemtags's count.
-    //           4. Call setNumSlideGroups() to set state. */
+    //           2. Read off itemsPerGroup from array by using window.innerWidth to determine object key breakpointPixels.
+    //           3. Calc number of item_groups from itemsPerGroup and prop items's count.
+    //           4. Call setNumberOfItemGroups() to set state. */
     //
     //         // Initialize arrayBreakpointsRef
     //         const arry = breakpoints.split(",");
     //         for (let i = 0; i < arry.length; i++) {
     //             const pair = arry[i].split(":");
     //             const pixels = parseInt(pair[0]);
-    //             const slidesPerGroup = parseInt(pair[1]);
-    //             arrayBreakpointsRef.current.push({breakpointPixels, slidesPerGroup});
+    //             const itemsPerGroup = parseInt(pair[1]);
+    //             arrayBreakpointsRef.current.push({breakpointPixels, itemsPerGroup});
     //         }
     //
-    //         // Read off slidesPerGroup from array
+    //         // Read off itemsPerGroup from array
     //         const winWidth = window.innerWidth;
     //         for (let i = arrayBreakpointsRef.current.length - 1; i >= 0 ; i++) {
     //             if (winWidth >= arrayBreakpointsRef.current[i].breakpointPixels) {
-    //                 const slidesPerGroup = arrayBreakpointsRef.current[i].slidesPerGroup;
-    //                 const numOfSlideGroups = Math.ceil(itemtags.length / slidesPerGroup);
+    //                 const itemsPerGroup = arrayBreakpointsRef.current[i].itemsPerGroup;
+    //                 const numberOfItemGroups = Math.ceil(items.length / itemsPerGroup);
     //
     //                 // Set state
-    //                 setNumSlideGroups( numOfSlideGroups);
+    //                 setNumberOfItemGroups( numberOfItemGroups);
     //
     //                 break;
     //             }
@@ -164,99 +170,157 @@ export default function Carousel({ breakpoints, itemtags, cssprefix="cssprefix" 
     //   },[]);
 
     useEffect(() => {
-        window.addEventListener("resize", recomputeAndSetCurrSlideGroupForWindowResize);
-        /* if (curr_slide_group < 0 || (prevItemtagsRef.current != itemtags)) {
-          prevItemtagsRef.current = itemtags;
-          setCurrSlideGroup(0);
+        window.addEventListener("resize", recomputeAndSetPosItemGroupForWindowResize);
+        /* if (pos_item_group < 0 || (prevItemsRef.current != items)) {
+          prevItemsRef.current = items;
+          setPosItemGroup(0);
         } */
-        if (curr_slide_group < 0) {
-          prevItemtagsRef.current = itemtags;
+        /* if (pos_item_group < 0) {
+          prevItemsRef.current = items;
           arrayBreakpointsRef.current = setupArrayBreakpoints( breakpoints);
-          prevSlidesPerGroupRef.current = getSlidesPerGroup( window.innerWidth, arrayBreakpointsRef.current);
-          setCurrSlideGroup(0);
-        } else if (prevItemtagsRef.current != itemtags) {
-          // setCurrSlideGroup(0);
-          const curr = recomputeCurrSlideGroupForNewItemstag(prevItemtagsRef.current, itemtags);
-          prevItemtagsRef.current = itemtags;
-          setCurrSlideGroup(curr);
+          prevItemsPerGroupRef.current = getItemsPerGroup( window.innerWidth, arrayBreakpointsRef.current);
+          setPosItemGroup(0);
+        } else if (prevItemsRef.current != items) {
+          // setPosItemGroup(0);
+          const pos = recomputePosItemGroupForNewItemstag(prevItemsRef.current, items);
+          prevItemsRef.current = items;
+          setPosItemGroup(pos);
+        } */
+        if (posItemGroupConcatItemsPerGroup == ',') {
+            prevItemsRef.current = items;
+            arrayBreakpointsRef.current = setupArrayBreakpoints( breakpoints);
+            setPosItemGroupConcatItemsPerGroup('0,' + getItemsPerGroup( window.innerWidth, arrayBreakpointsRef.current));
+        } else if (prevItemsRef.current != items) {
+            // setPosItemGroup(0);
+            /* const pos = recomputePosItemGroupForNewItemstag(prevItemsRef.current, items);
+            prevItemsRef.current = items;
+            setPosItemGroup(pos); */
+        } else {
+            console.log('useEffect PosItemGroupConcatItemsPerGroup',posItemGroupConcatItemsPerGroup);
         }
-        return () => window.removeEventListener("resize", recomputeAndSetCurrSlideGroupForWindowResize);
+        return () => window.removeEventListener("resize", recomputeAndSetPosItemGroupForWindowResize);
     });
 
     let out;
 
-    if (curr_slide_group < 0) {
+    if (posItemGroupConcatItemsPerGroup == ',') {
         out = (
             <div className={`${cssprefix + '__carousel-wrap'}`}>
                 <p className={`${cssprefix + '__carousel-is-loading'}`}>Initializing...</p>
             </div>
         );
-    } else if (itemtags.length == 0) {
+    } else if (items.length == 0) {
         out = null;
-    } else if (prevItemtagsRef.current != itemtags) {
+    } else if (prevItemsRef.current != items) {
         out = (
             <div className={`${cssprefix + '__carousel-wrap'}`}>
                 <p className={`${cssprefix + '__carousel-is-loading'}`}>Re-loading...</p>
             </div>
         );
     } else {
+        
+        const pair = posItemGroupConcatItemsPerGroup.split(',');
+        const itemsPerGroup = parseInt( pair[1]);
+        const numberOfItemGroups = Math.ceil(items.length / itemsPerGroup);
+    console.log('out posItemGroupConcatItemsPerGroup',posItemGroupConcatItemsPerGroup);
+        const array_groups = [];
+
+        for (let i = 0; i < numberOfItemGroups; i++) {
+            const posHeadItemInGroup: number = i*itemsPerGroup;
+            const posTailItemInGroup = i < numberOfItemGroups - 1 ? posHeadItemInGroup + itemsPerGroup - 1 : items.length - 1;
+            const groupkey: string = itemIDs[posHeadItemInGroup] + itemIDs[posTailItemInGroup];
+            
+            const groupItems = [];
+            
+            for (let k = posHeadItemInGroup; k <= posTailItemInGroup; k++) {
+                groupItems.push( <div className={`${cssprefix + '__carousel-slide'}`} key={itemIDs[k]}>{items[k]}</div>);
+            }
+
+            if (i == numberOfItemGroups - 1) { // last iteration for array_groups
+                let remaining: number = items.length % itemsPerGroup;
+                if ( remaining > 0) { // final groupItems doesn't meet full occupany of itemsPerGroup, so will have to padd it up
+                    for (let i = 0; i < itemsPerGroup - remaining; i++) {
+                        groupItems.push( <div className={`${cssprefix + '__carousel-slide'}`} key={`nill${i}`}></div>);
+                    }
+                }
+            }
+
+            // array_groups.push(<div className={`${cssprefix + '__carousel-slide-group'}`} key={groupkey} id={groupkey} style={{gridTemplateColumns: `repeat(${itemsPerGroup},1fr)`}}>{groupItems}</div>)
+            array_groups.push(<div className={`${cssprefix + '__carousel-slide-group'}`} key={groupkey} id={groupkey}>{groupItems}</div>)
+        }
+
+        const posItemGroup = parseInt( pair[0]);
+
         out = (
             <div className={`${cssprefix + '__carousel-wrap'}`}>
                     <div className={`${cssprefix + '__carousel'}`}>
-                        <button className={`${cssprefix + '__carousel-nav navigate-to-previousSlide'} ${curr_slide_group > 0 ? "nav-prev-visible" : "nav-prev-hidden"}`} onClick={() => recomputeAndSetCurrSlideGroupForNavOnclick( NavDirection.Prev, window.innerWidth, arrayBreakpointsRef.current, itemtags.length, curr_slide_group, setCurrSlideGroup)}></button>
+                        <button className={`${cssprefix + '__carousel-nav navigate-to-previous'} ${posItemGroup > 0 ? "" : "nav-prev-hidden"}`} onClick={() => recomputeAndSetPosItemGroupForNavOnclick( NavDirection.Prev, window.innerWidth, arrayBreakpointsRef.current, items.length, posItemGroup, itemsPerGroup, setPosItemGroupConcatItemsPerGroup)}></button>
                         <div className={`${cssprefix + '__carousel-slider-tube'}`}>
-                            <div className={`${cssprefix + '__carousel-slider'}`} style={{marginLeft: `${-100 * curr_slide_group}%`}}>
-                                <div className={`${cssprefix + '__carousel-slide-group'}`}>
+                            <div className={`${cssprefix + '__carousel-slider'}`} style={{marginLeft: `${-100 * posItemGroup}%`}}>
+                                {array_groups}
+                                {/* <div className={`${cssprefix + '__carousel-slide-group'}`}>
                                     <div className={`${cssprefix + '__carousel-slide'}`}>
-                                        <p>slide 1</p>
-                                        <p>slide 1</p>
-                                        <p>slide 1</p>
-                                        <p>slide 1</p>
-                                        <p>slide 1</p>
+                                        <div>
+                                            <p>item 1</p>
+                                            <p>item 1</p>
+                                            <p>item 1</p>
+                                            <p>item 1</p>
+                                            <p>item 1</p>
+                                        </div>
                                     </div>
                                     <div className={`${cssprefix + '__carousel-slide'}`}>
-                                        <p>slide 2</p>
-                                        <p>slide 2</p>
-                                        <p>slide 2</p>
-                                        <p>slide 2</p>
-                                        <p>slide 2</p>
+                                        <div>
+                                            <p>item 2</p>
+                                            <p>item 2</p>
+                                            <p>item 2</p>
+                                            <p>item 2</p>
+                                            <p>item 2</p>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className={`${cssprefix + '__carousel-slide-group'}`}>
+                                </div> */}
+                                {/* <div className={`${cssprefix + '__carousel-slide-group'}`}>
                                     <div className={`${cssprefix + '__carousel-slide'}`}>
-                                        <p>slide 3</p>
-                                        <p>slide 3</p>
-                                        <p>slide 3</p>
-                                        <p>slide 3</p>
-                                        <p>slide 3</p>
-                                    </div>
-                                    <div className={`${cssprefix + '__carousel-slide'}`}>
-                                        <p>slide 4</p>
-                                        <p>slide 4</p>
-                                        <p>slide 4</p>
-                                        <p>slide 4</p>
-                                        <p>slide 4</p>
-                                    </div>
-                                </div>
-                                <div className={`${cssprefix + '__carousel-slide-group'}`}>
-                                    <div className={`${cssprefix + '__carousel-slide'}`}>
-                                        <p>slide 5</p>
-                                        <p>slide 5</p>
-                                        <p>slide 5</p>
-                                        <p>slide 5</p>
-                                        <p>slide 5</p>
+                                        <div>
+                                            <p>item 3</p>
+                                            <p>item 3</p>
+                                            <p>item 3</p>
+                                            <p>item 3</p>
+                                            <p>item 3</p>
+                                        </div>
                                     </div>
                                     <div className={`${cssprefix + '__carousel-slide'}`}>
-                                        <p>slide 6</p>
-                                        <p>slide 6</p>
-                                        <p>slide 6</p>
-                                        <p>slide 6</p>
-                                        <p>slide 6</p>
+                                        <div>
+                                            <p>item 4</p>
+                                            <p>item 4</p>
+                                            <p>item 4</p>
+                                            <p>item 4</p>
+                                            <p>item 4</p>
+                                        </div>
                                     </div>
-                                </div>
+                                </div> */}
+                                {/* <div className={`${cssprefix + '__carousel-slide-group'}`}>
+                                    <div className={`${cssprefix + '__carousel-slide'}`}>
+                                        <div>
+                                            <p>item 5</p>
+                                            <p>item 5</p>
+                                            <p>item 5</p>
+                                            <p>item 5</p>
+                                            <p>item 5</p>
+                                        </div>
+                                    </div>
+                                    <div className={`${cssprefix + '__carousel-slide'}`}>
+                                        <div>
+                                            <p>item 6</p>
+                                            <p>item 6</p>
+                                            <p>item 6</p>
+                                            <p>item 6</p>
+                                            <p>item 6</p>
+                                        </div>
+                                    </div>
+                                </div> */}
                             </div>
                         </div>
-                        <button className={`${cssprefix + '__carousel-nav navigate-to-nextSlide'}`} onClick={() => recomputeAndSetCurrSlideGroupForNavOnclick( NavDirection.Next, window.innerWidth, arrayBreakpointsRef.current, itemtags.length, curr_slide_group, setCurrSlideGroup)}></button>
+                        <button className={`${cssprefix + '__carousel-nav navigate-to-next'} ${items.length > itemsPerGroup ? "" : "nav-next-hidden"}`} onClick={() => recomputeAndSetPosItemGroupForNavOnclick( NavDirection.Next, window.innerWidth, arrayBreakpointsRef.current, items.length, posItemGroup, itemsPerGroup, setPosItemGroupConcatItemsPerGroup)}></button>
                     </div>
               
             </div>
