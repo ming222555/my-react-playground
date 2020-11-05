@@ -81,7 +81,12 @@ console.log('recomputeAndSetPosItemGroupForNavOnclick num',num);
     setter( newPosItemGroup + ',' + itemsPerGroup);
 }
 
-function recomputeAndSetItemsPerGroupForWindowResize(winWidth: number, arrayBreakpoints: IBreakpoints[], posItemGroupConcatItemsPerGroup: string, setter: ( posItemGroupConcatItemsPerGroup: string) => any) {
+function recomputeAndSetItemsPerGroupForWindowResize(winWidth: number, arrayBreakpoints: IBreakpoints[], posItemGroupConcatItemsPerGroup: string, numberOfItems: number, setter: ( posItemGroupConcatItemsPerGroup: string) => any) {
+
+    if( numberOfItems == 0) {
+        return;
+    }
+
     const pair = posItemGroupConcatItemsPerGroup.split(',');
     const itemsPerGroup = parseInt( pair[1]);
 
@@ -114,13 +119,13 @@ function recomputePosItemGroupForNewItemstag(prevItems: {}[], items: {}[]): numb
 
 
 export default function Carousel({ breakpoints, items, itemIDs, cssprefix="cssprefix" }: PageProps) {
-    const [pos_item_group, setPosItemGroup] = useState(-1);
+    //////////////////// const [pos_item_group, setPosItemGroup] = useState(-1);
     const prevItemsRef: React.MutableRefObject<{}[]> = useRef(null as any);
     const arrayBreakpointsRef: React.MutableRefObject<IBreakpoints[]> = useRef([]);
-    const prevItemsPerGroupRef: React.MutableRefObject<number> = useRef(0);
+    //////////////////// const prevItemsPerGroupRef: React.MutableRefObject<number> = useRef(0);
 
     const [posItemGroupConcatItemsPerGroup, setPosItemGroupConcatItemsPerGroup] = useState(','); // comma delimiter
-    const prevPosItemGroupConcatItemsPerGroupRef: React.MutableRefObject<string> = useRef(',');
+    const [counterForceRedraw, setCounterForceRedraw] = useState(0);
     
     /*const recomputeAndSetPosItemGroupForNavOnclick = (navi: NavDirection) => {
         const num_item_groups = getNumberOfItemGroups();
@@ -190,7 +195,7 @@ export default function Carousel({ breakpoints, items, itemIDs, cssprefix="csspr
     //   },[]);
 
     useEffect(() => {
-        let fn = () => recomputeAndSetItemsPerGroupForWindowResize( window.innerWidth, arrayBreakpointsRef.current, posItemGroupConcatItemsPerGroup, setPosItemGroupConcatItemsPerGroup);
+        let fn = () => recomputeAndSetItemsPerGroupForWindowResize( window.innerWidth, arrayBreakpointsRef.current, posItemGroupConcatItemsPerGroup, items.length, setPosItemGroupConcatItemsPerGroup);
         window.addEventListener("resize", fn);
         /* if (pos_item_group < 0 || (prevItemsRef.current != items)) {
           prevItemsRef.current = items;
@@ -207,31 +212,43 @@ export default function Carousel({ breakpoints, items, itemIDs, cssprefix="csspr
           prevItemsRef.current = items;
           setPosItemGroup(pos);
         } */
-        if (posItemGroupConcatItemsPerGroup == ',') {
+        
+        if (items.length == 0) {
+            // nuttin
+        } else if (posItemGroupConcatItemsPerGroup == ',') {
             prevItemsRef.current = items;
             arrayBreakpointsRef.current = setupArrayBreakpoints( breakpoints);
             setPosItemGroupConcatItemsPerGroup('0,' + getItemsPerGroup( window.innerWidth, arrayBreakpointsRef.current));
         } else if (prevItemsRef.current != items) {
-            // setPosItemGroup(0);
-            /* const pos = recomputePosItemGroupForNewItemstag(prevItemsRef.current, items);
+            const pair = posItemGroupConcatItemsPerGroup.split(',');
+            const itemsPerGroup = parseInt( pair[1]);
+            const posItemGroup = parseInt( pair[0]);
+
             prevItemsRef.current = items;
-            setPosItemGroup(pos); */
+            
+            if ( posItemGroup != 0) {
+                setPosItemGroupConcatItemsPerGroup('0,' + itemsPerGroup);
+            } else {
+                const newCounterForceRedraw = counterForceRedraw + 1;
+                setCounterForceRedraw( newCounterForceRedraw);
+            }
+
         } else {
-            console.log('useEffect PosItemGroupConcatItemsPerGroup',posItemGroupConcatItemsPerGroup);
+            console.log('useEffect PosItemGroupConcatItemsPerGroup',posItemGroupConcatItemsPerGroup); // debug
         }
         return () => window.removeEventListener("resize", fn);
     });
 
     let out;
 
-    if (posItemGroupConcatItemsPerGroup == ',') {
+    if (items.length == 0) {
+        out = null;
+    } else if (posItemGroupConcatItemsPerGroup == ',') {
         out = (
             <div className={`${cssprefix + '__carousel-wrap'}`}>
                 <p className={`${cssprefix + '__carousel-is-loading'}`}>Initializing...</p>
             </div>
         );
-    } else if (items.length == 0) {
-        out = null;
     } else if (prevItemsRef.current != items) {
         out = (
             <div className={`${cssprefix + '__carousel-wrap'}`}>
