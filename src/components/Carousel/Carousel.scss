@@ -35,6 +35,10 @@ $carousel-slider-grid-gap: 1rem;
                 border-bottom: 2px solid blue;
                 border-left: 2px solid blue;
             }
+
+            &.nav-hidden {
+                visibility: hidden;
+            }
         }
         
         &-nav.navigate-to-previous {
@@ -42,9 +46,9 @@ $carousel-slider-grid-gap: 1rem;
             align-self: center;
             transform: rotate(45deg);
 
-            &.nav-prev-hidden {
-                visibility: hidden;
-            }
+            // &.nav-prev-hidden {
+            //     visibility: hidden;
+            // }
         }
 
         &-slider-tube {
@@ -68,9 +72,9 @@ $carousel-slider-grid-gap: 1rem;
             align-self: center;
             transform: rotate(225deg);
 
-            &.nav-next-hidden {
-                visibility: hidden;
-            }
+            // &.nav-next-hidden {
+            //     visibility: hidden;
+            // }
         }
 
         &-slide-group {

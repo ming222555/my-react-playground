@@ -81,9 +81,29 @@ console.log('recomputeAndSetPosItemGroupForNavOnclick num',num);
     setter( newPosItemGroup + ',' + itemsPerGroup);
 }
 
-function recomputeAndSetPosItemGroupForWindowResize() {
-    // ... compute newPosItemGroup,
-    // ... setPosItemGroup(newPosItemGroup);
+function recomputeAndSetItemsPerGroupForWindowResize(winWidth: number, arrayBreakpoints: IBreakpoints[], posItemGroupConcatItemsPerGroup: string, setter: ( posItemGroupConcatItemsPerGroup: string) => any) {
+    const pair = posItemGroupConcatItemsPerGroup.split(',');
+    const itemsPerGroup = parseInt( pair[1]);
+
+    const newItemsPerGroup: number = getItemsPerGroup( window.innerWidth, arrayBreakpoints);
+
+    if ( itemsPerGroup == newItemsPerGroup) {
+        return;
+    }
+
+    const posItemGroup = parseInt( pair[0]);
+    
+    if ( posItemGroup == 0) {
+        setter( '0,' + newItemsPerGroup);
+        return;
+    }
+
+    let newPosItemGroup: number;
+
+    const absIdxOfLeadingItemInCurrItemGroup = ( posItemGroup * itemsPerGroup) + 1; // Idx starting with 1 wrt items
+
+    newPosItemGroup = Math.ceil( absIdxOfLeadingItemInCurrItemGroup / newItemsPerGroup) - 1;
+    setter( newPosItemGroup + ',' + newItemsPerGroup);
 };
 
 function recomputePosItemGroupForNewItemstag(prevItems: {}[], items: {}[]): number {
@@ -118,7 +138,7 @@ export default function Carousel({ breakpoints, items, itemIDs, cssprefix="csspr
         setPosItemGroup( newPosItemGroup);
     };*/
 
-    /*const recomputeAndSetPosItemGroupForWindowResize = () => {
+    /*const recomputeAndSetItemsPerGroupForWindowResize = () => {
         // ... compute newPosItemGroup,
         // ... setPosItemGroup(newPosItemGroup);
     };*/
@@ -170,7 +190,8 @@ export default function Carousel({ breakpoints, items, itemIDs, cssprefix="csspr
     //   },[]);
 
     useEffect(() => {
-        window.addEventListener("resize", recomputeAndSetPosItemGroupForWindowResize);
+        let fn = () => recomputeAndSetItemsPerGroupForWindowResize( window.innerWidth, arrayBreakpointsRef.current, posItemGroupConcatItemsPerGroup, setPosItemGroupConcatItemsPerGroup);
+        window.addEventListener("resize", fn);
         /* if (pos_item_group < 0 || (prevItemsRef.current != items)) {
           prevItemsRef.current = items;
           setPosItemGroup(0);
@@ -198,7 +219,7 @@ export default function Carousel({ breakpoints, items, itemIDs, cssprefix="csspr
         } else {
             console.log('useEffect PosItemGroupConcatItemsPerGroup',posItemGroupConcatItemsPerGroup);
         }
-        return () => window.removeEventListener("resize", recomputeAndSetPosItemGroupForWindowResize);
+        return () => window.removeEventListener("resize", fn);
     });
 
     let out;
@@ -254,7 +275,7 @@ export default function Carousel({ breakpoints, items, itemIDs, cssprefix="csspr
         out = (
             <div className={`${cssprefix + '__carousel-wrap'}`}>
                     <div className={`${cssprefix + '__carousel'}`}>
-                        <button className={`${cssprefix + '__carousel-nav navigate-to-previous'} ${posItemGroup > 0 ? "" : "nav-prev-hidden"}`} onClick={() => recomputeAndSetPosItemGroupForNavOnclick( NavDirection.Prev, window.innerWidth, arrayBreakpointsRef.current, items.length, posItemGroup, itemsPerGroup, setPosItemGroupConcatItemsPerGroup)}></button>
+                        <button className={`${cssprefix + '__carousel-nav navigate-to-previous'} ${posItemGroup > 0 ? "" : "nav-hidden"}`} onClick={() => recomputeAndSetPosItemGroupForNavOnclick( NavDirection.Prev, window.innerWidth, arrayBreakpointsRef.current, items.length, posItemGroup, itemsPerGroup, setPosItemGroupConcatItemsPerGroup)}></button>
                         <div className={`${cssprefix + '__carousel-slider-tube'}`}>
                             <div className={`${cssprefix + '__carousel-slider'}`} style={{marginLeft: `${-100 * posItemGroup}%`}}>
                                 {array_groups}
@@ -320,7 +341,7 @@ export default function Carousel({ breakpoints, items, itemIDs, cssprefix="csspr
                                 </div> */}
                             </div>
                         </div>
-                        <button className={`${cssprefix + '__carousel-nav navigate-to-next'} ${items.length > itemsPerGroup ? "" : "nav-next-hidden"}`} onClick={() => recomputeAndSetPosItemGroupForNavOnclick( NavDirection.Next, window.innerWidth, arrayBreakpointsRef.current, items.length, posItemGroup, itemsPerGroup, setPosItemGroupConcatItemsPerGroup)}></button>
+                        <button className={`${cssprefix + '__carousel-nav navigate-to-next'} ${items.length > itemsPerGroup ? "" : "nav-hidden"}`} onClick={() => recomputeAndSetPosItemGroupForNavOnclick( NavDirection.Next, window.innerWidth, arrayBreakpointsRef.current, items.length, posItemGroup, itemsPerGroup, setPosItemGroupConcatItemsPerGroup)}></button>
                     </div>
               
             </div>
