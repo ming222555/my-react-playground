@@ -34,8 +34,8 @@ function getNumberOfItemGroups(winWidth: number, arrayBreakpoints: IBreakpoints[
             const itemsPerGroup = arrayBreakpoints[i].itemsPerGroup;
             ret = Math.ceil(numberOfItems / itemsPerGroup);
 
-            console.log('getNumberOfItemGroups winWidth',winWidth);
-            console.log('getNumberOfItemGroups winWidth',arrayBreakpoints[i].breakpointPixels);
+            // console.log('getNumberOfItemGroups winWidth',winWidth);
+            // console.log('getNumberOfItemGroups winWidth',arrayBreakpoints[i].breakpointPixels);
 
             break;
         }
@@ -68,7 +68,7 @@ function setupArrayBreakpoints(breakpoints: string): IBreakpoints[] {
 
 function recomputeAndSetPosItemGroupForNavOnclick(navi: NavDirection, winWidth: number, arrayBreakpoints: IBreakpoints[], numberOfItems: number, posItemGroup: number, itemsPerGroup: number, setter: ( posItemGroupConcatItemsPerGroup: string) => any) {
     const num = getNumberOfItemGroups( winWidth, arrayBreakpoints, numberOfItems);
-console.log('recomputeAndSetPosItemGroupForNavOnclick num',num);
+    // console.log('recomputeAndSetPosItemGroupForNavOnclick num',num);
     let newPosItemGroup = 0;
     if (navi == NavDirection.Next) {
         newPosItemGroup = (posItemGroup + 1) % num
@@ -111,107 +111,18 @@ function recomputeAndSetItemsPerGroupForWindowResize(winWidth: number, arrayBrea
     setter( newPosItemGroup + ',' + newItemsPerGroup);
 };
 
-function recomputePosItemGroupForNewItemstag(prevItems: {}[], items: {}[]): number {
-    // ... compute newPosItemGroup,
-    // return newPosItemGroup;
-    return 100;
-}
-
-
-export default function Carousel({ breakpoints, items, itemIDs, cssprefix="cssprefix" }: PageProps) {
+function Carousel({ breakpoints, items, itemIDs, cssprefix="cssprefix" }: PageProps) {
     //////////////////// const [pos_item_group, setPosItemGroup] = useState(-1);
     const prevItemsRef: React.MutableRefObject<{}[]> = useRef(null as any);
     const arrayBreakpointsRef: React.MutableRefObject<IBreakpoints[]> = useRef([]);
     //////////////////// const prevItemsPerGroupRef: React.MutableRefObject<number> = useRef(0);
-
+    // console.log('testing Carousel memo');
     const [posItemGroupConcatItemsPerGroup, setPosItemGroupConcatItemsPerGroup] = useState(','); // comma delimiter
     const [counterForceRedraw, setCounterForceRedraw] = useState(0);
     
-    /*const recomputeAndSetPosItemGroupForNavOnclick = (navi: NavDirection) => {
-        const num_item_groups = getNumberOfItemGroups();
-
-        let newPosItemGroup = 0;
-        if (navi == NavDirection.Next) {
-            newPosItemGroup = (pos_item_group + 1) % num_item_groups
-        } else {
-            if ( pos_item_group == 0) {
-                return;
-            }
-            newPosItemGroup = (pos_item_group - 1) % num_item_groups
-        }
-        let pct_shift = (-100 * newPosItemGroup) + '%';
-        setPosItemGroup( newPosItemGroup);
-    };*/
-
-    /*const recomputeAndSetItemsPerGroupForWindowResize = () => {
-        // ... compute newPosItemGroup,
-        // ... setPosItemGroup(newPosItemGroup);
-    };*/
-
-    /*const recomputePosItemGroupForNewItemstag = (prevItemsRef: {}[], items: {}[]): number => {
-        // ... compute newPosItemGroup,
-        // return newPosItemGroup;
-        return 100;
-    }*/
-    
-    // useEffect(() => {
-    //     if (num_item_groups < 0) {
-    //         /* At mounted.
-    //         Calc num_item_groups.
-    //         Call setNumberOfItemGroups() to redraw.
-    //         steps ...
-    //           1. Initialize array (arrayBreakpointsRef) of {breakpointPixels, itemsPerGroup} objects from prop breakpoints.
-    //              see interface PageProps for example prop breakpoints.
-    //           2. Read off itemsPerGroup from array by using window.innerWidth to determine object key breakpointPixels.
-    //           3. Calc number of item_groups from itemsPerGroup and prop items's count.
-    //           4. Call setNumberOfItemGroups() to set state. */
-    //
-    //         // Initialize arrayBreakpointsRef
-    //         const arry = breakpoints.split(",");
-    //         for (let i = 0; i < arry.length; i++) {
-    //             const pair = arry[i].split(":");
-    //             const pixels = parseInt(pair[0]);
-    //             const itemsPerGroup = parseInt(pair[1]);
-    //             arrayBreakpointsRef.current.push({breakpointPixels, itemsPerGroup});
-    //         }
-    //
-    //         // Read off itemsPerGroup from array
-    //         const winWidth = window.innerWidth;
-    //         for (let i = arrayBreakpointsRef.current.length - 1; i >= 0 ; i++) {
-    //             if (winWidth >= arrayBreakpointsRef.current[i].breakpointPixels) {
-    //                 const itemsPerGroup = arrayBreakpointsRef.current[i].itemsPerGroup;
-    //                 const numberOfItemGroups = Math.ceil(items.length / itemsPerGroup);
-    //
-    //                 // Set state
-    //                 setNumberOfItemGroups( numberOfItemGroups);
-    //
-    //                 break;
-    //             }
-    //         }
-    //
-    //     } else {
-    //  
-    //     }
-    //   },[]);
-
     useEffect(() => {
         let fn = () => recomputeAndSetItemsPerGroupForWindowResize( window.innerWidth, arrayBreakpointsRef.current, posItemGroupConcatItemsPerGroup, items.length, setPosItemGroupConcatItemsPerGroup);
         window.addEventListener("resize", fn);
-        /* if (pos_item_group < 0 || (prevItemsRef.current != items)) {
-          prevItemsRef.current = items;
-          setPosItemGroup(0);
-        } */
-        /* if (pos_item_group < 0) {
-          prevItemsRef.current = items;
-          arrayBreakpointsRef.current = setupArrayBreakpoints( breakpoints);
-          prevItemsPerGroupRef.current = getItemsPerGroup( window.innerWidth, arrayBreakpointsRef.current);
-          setPosItemGroup(0);
-        } else if (prevItemsRef.current != items) {
-          // setPosItemGroup(0);
-          const pos = recomputePosItemGroupForNewItemstag(prevItemsRef.current, items);
-          prevItemsRef.current = items;
-          setPosItemGroup(pos);
-        } */
         
         if (items.length == 0) {
             // nuttin
@@ -234,7 +145,7 @@ export default function Carousel({ breakpoints, items, itemIDs, cssprefix="csspr
             }
 
         } else {
-            console.log('useEffect PosItemGroupConcatItemsPerGroup',posItemGroupConcatItemsPerGroup); // debug
+            // console.log('useEffect PosItemGroupConcatItemsPerGroup',posItemGroupConcatItemsPerGroup); // debug
         }
         return () => window.removeEventListener("resize", fn);
     });
@@ -260,7 +171,7 @@ export default function Carousel({ breakpoints, items, itemIDs, cssprefix="csspr
         const pair = posItemGroupConcatItemsPerGroup.split(',');
         const itemsPerGroup = parseInt( pair[1]);
         const numberOfItemGroups = Math.ceil(items.length / itemsPerGroup);
-    console.log('out posItemGroupConcatItemsPerGroup',posItemGroupConcatItemsPerGroup);
+        // console.log('out posItemGroupConcatItemsPerGroup',posItemGroupConcatItemsPerGroup);
         const array_groups = [];
 
         for (let i = 0; i < numberOfItemGroups; i++) {
@@ -336,26 +247,6 @@ export default function Carousel({ breakpoints, items, itemIDs, cssprefix="csspr
                                         </div>
                                     </div>
                                 </div> */}
-                                {/* <div className={`${cssprefix + '__carousel-slide-group'}`}>
-                                    <div className={`${cssprefix + '__carousel-slide'}`}>
-                                        <div>
-                                            <p>item 5</p>
-                                            <p>item 5</p>
-                                            <p>item 5</p>
-                                            <p>item 5</p>
-                                            <p>item 5</p>
-                                        </div>
-                                    </div>
-                                    <div className={`${cssprefix + '__carousel-slide'}`}>
-                                        <div>
-                                            <p>item 6</p>
-                                            <p>item 6</p>
-                                            <p>item 6</p>
-                                            <p>item 6</p>
-                                            <p>item 6</p>
-                                        </div>
-                                    </div>
-                                </div> */}
                             </div>
                         </div>
                         <button className={`${cssprefix + '__carousel-nav navigate-to-next'} ${items.length > itemsPerGroup ? "" : "nav-hidden"}`} onClick={() => recomputeAndSetPosItemGroupForNavOnclick( NavDirection.Next, window.innerWidth, arrayBreakpointsRef.current, items.length, posItemGroup, itemsPerGroup, setPosItemGroupConcatItemsPerGroup)}></button>
@@ -367,3 +258,5 @@ export default function Carousel({ breakpoints, items, itemIDs, cssprefix="csspr
 
     return out;
 }
+
+export default React.memo(Carousel);
