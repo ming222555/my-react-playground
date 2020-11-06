@@ -111,7 +111,7 @@ function recomputeAndSetItemsPerGroupForWindowResize(winWidth: number, arrayBrea
     setter( newPosItemGroup + ',' + newItemsPerGroup);
 };
 
-function Carousel({ breakpoints, items, itemIDs, cssprefix="cssprefix" }: PageProps) {
+function Carousel({ breakpoints="", items=[], itemIDs=[], cssprefix="cssprefix" }: PageProps) {
     //////////////////// const [pos_item_group, setPosItemGroup] = useState(-1);
     const prevItemsRef: React.MutableRefObject<{}[]> = useRef(null as any);
     const arrayBreakpointsRef: React.MutableRefObject<IBreakpoints[]> = useRef([]);
