@@ -31,8 +31,8 @@ function HomePage() {
     return (
         <div className="homePage">
             I am HomePage   <button onClick={() => setCarouselChoice(0)}>Carousel 0</button> 
-                            <button onClick={() => setCarouselChoice(2)}>Carousel 2</button> 
-                            <button onClick={() => setCarouselChoice(1)}>Carousel 1</button>
+                            <button onClick={() => setCarouselChoice(1)}>Carousel 1</button> 
+                            <button onClick={() => setCarouselChoice(2)}>Carousel 2</button>
     {/* {counterForceRedraw}    <button onClick={() => setCounterForceRedraw(counterForceRedraw => counterForceRedraw + 1)}>setCounterForceRedraw</button> */}
             {out}
             {/* <Carousel 
