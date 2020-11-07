@@ -156,14 +156,14 @@ function Carousel({ breakpoints="", items=[], itemIDs=[], cssprefix="cssprefix" 
         out = null;
     } else if (posItemGroupConcatItemsPerGroup == ',') {
         out = (
-            <div className={`${cssprefix + '__carousel-wrap'}`}>
-                <p className={`${cssprefix + '__carousel-is-loading'}`}>Initializing...</p>
+            <div className={`${cssprefix}__carousel-wrap`}>
+                <p className={`${cssprefix}__carousel-is-loading`}>Initializing...</p>
             </div>
         );
     } else if (prevItemsRef.current != items) {
         out = (
-            <div className={`${cssprefix + '__carousel-wrap'}`}>
-                <p className={`${cssprefix + '__carousel-is-loading'}`}>Re-loading...</p>
+            <div className={`${cssprefix}__carousel-wrap`}>
+                <p className={`${cssprefix}__carousel-is-loading`}>Re-loading...</p>
             </div>
         );
     } else {
@@ -182,33 +182,33 @@ function Carousel({ breakpoints="", items=[], itemIDs=[], cssprefix="cssprefix" 
             const groupItems = [];
             
             for (let k = posHeadItemInGroup; k <= posTailItemInGroup; k++) {
-                groupItems.push( <div className={`${cssprefix + '__carousel-slide'}`} key={itemIDs[k]}>{items[k]}</div>);
+                groupItems.push( <div className={`${cssprefix}__carousel-slide`} key={itemIDs[k]}>{items[k]}</div>);
             }
 
             if (i == numberOfItemGroups - 1) { // last iteration for array_groups
                 let remaining: number = items.length % itemsPerGroup;
                 if ( remaining > 0) { // final groupItems doesn't meet full occupany of itemsPerGroup, so needs to padd it up
                     for (let i = 0; i < itemsPerGroup - remaining; i++) {
-                        groupItems.push( <div className={`${cssprefix + '__carousel-slide'}`} key={`nill${i}`}></div>);
+                        groupItems.push( <div className={`${cssprefix}__carousel-slide`} key={`nill${i}`}></div>);
                     }
                 }
             }
 
-            // array_groups.push(<div className={`${cssprefix + '__carousel-slide-group'}`} key={groupkey} id={groupkey} style={{gridTemplateColumns: `repeat(${itemsPerGroup},1fr)`}}>{groupItems}</div>)
-            array_groups.push(<div className={`${cssprefix + '__carousel-slide-group'}`} key={groupkey} id={groupkey}>{groupItems}</div>)
+            // array_groups.push(<div className={`${cssprefix}__carousel-slide-group`} key={groupkey} id={groupkey} style={{gridTemplateColumns: `repeat(${itemsPerGroup},1fr)`}}>{groupItems}</div>)
+            array_groups.push(<div className={`${cssprefix}__carousel-slide-group`} key={groupkey} id={groupkey}>{groupItems}</div>)
         }
 
         const posItemGroup = parseInt( pair[0]);
 
         out = (
-            <div className={`${cssprefix + '__carousel-wrap'}`}>
-                    <div className={`${cssprefix + '__carousel'}`}>
-                        <button className={`${cssprefix + '__carousel-nav navigate-to-previous'} ${posItemGroup > 0 ? "" : "nav-hidden"}`} onClick={() => recomputeAndSetPosItemGroupForNavOnclick( NavDirection.Prev, window.innerWidth, arrayBreakpointsRef.current, items.length, posItemGroup, itemsPerGroup, setPosItemGroupConcatItemsPerGroup)}></button>
-                        <div className={`${cssprefix + '__carousel-slider-tube'}`}>
-                            <div className={`${cssprefix + '__carousel-slider'}`} style={{marginLeft: `${-100 * posItemGroup}%`}}>
+            <div className={`${cssprefix}__carousel-wrap`}>
+                    <div className={`${cssprefix}__carousel`}>
+                        <button className={`${cssprefix}__carousel-nav navigate-to-previous ${posItemGroup > 0 ? "" : "nav-hidden"}`} onClick={() => recomputeAndSetPosItemGroupForNavOnclick( NavDirection.Prev, window.innerWidth, arrayBreakpointsRef.current, items.length, posItemGroup, itemsPerGroup, setPosItemGroupConcatItemsPerGroup)}></button>
+                        <div className={`${cssprefix}__carousel-slider-tube`}>
+                            <div className={`${cssprefix}__carousel-slider`} style={{marginLeft: `${-100 * posItemGroup}%`}}>
                                 {array_groups}
-                                {/* <div className={`${cssprefix + '__carousel-slide-group'}`}>
-                                    <div className={`${cssprefix + '__carousel-slide'}`}>
+                                {/* <div className={`${cssprefix}__carousel-slide-group`}>
+                                    <div className={`${cssprefix}__carousel-slide`}>
                                         <div>
                                             <p>item 1</p>
                                             <p>item 1</p>
@@ -217,7 +217,7 @@ function Carousel({ breakpoints="", items=[], itemIDs=[], cssprefix="cssprefix" 
                                             <p>item 1</p>
                                         </div>
                                     </div>
-                                    <div className={`${cssprefix + '__carousel-slide'}`}>
+                                    <div className={`${cssprefix}__carousel-slide`}>
                                         <div>
                                             <p>item 2</p>
                                             <p>item 2</p>
@@ -227,8 +227,8 @@ function Carousel({ breakpoints="", items=[], itemIDs=[], cssprefix="cssprefix" 
                                         </div>
                                     </div>
                                 </div> */}
-                                {/* <div className={`${cssprefix + '__carousel-slide-group'}`}>
-                                    <div className={`${cssprefix + '__carousel-slide'}`}>
+                                {/* <div className={`${cssprefix}__carousel-slide-group`}>
+                                    <div className={`${cssprefix}__carousel-slide`}>
                                         <div>
                                             <p>item 3</p>
                                             <p>item 3</p>
@@ -237,7 +237,7 @@ function Carousel({ breakpoints="", items=[], itemIDs=[], cssprefix="cssprefix" 
                                             <p>item 3</p>
                                         </div>
                                     </div>
-                                    <div className={`${cssprefix + '__carousel-slide'}`}>
+                                    <div className={`${cssprefix}__carousel-slide`}>
                                         <div>
                                             <p>item 4</p>
                                             <p>item 4</p>
@@ -249,7 +249,7 @@ function Carousel({ breakpoints="", items=[], itemIDs=[], cssprefix="cssprefix" 
                                 </div> */}
                             </div>
                         </div>
-                        <button className={`${cssprefix + '__carousel-nav navigate-to-next'} ${items.length > itemsPerGroup ? "" : "nav-hidden"}`} onClick={() => recomputeAndSetPosItemGroupForNavOnclick( NavDirection.Next, window.innerWidth, arrayBreakpointsRef.current, items.length, posItemGroup, itemsPerGroup, setPosItemGroupConcatItemsPerGroup)}></button>
+                        <button className={`${cssprefix}__carousel-nav navigate-to-next ${items.length > itemsPerGroup ? "" : "nav-hidden"}`} onClick={() => recomputeAndSetPosItemGroupForNavOnclick( NavDirection.Next, window.innerWidth, arrayBreakpointsRef.current, items.length, posItemGroup, itemsPerGroup, setPosItemGroupConcatItemsPerGroup)}></button>
                     </div>
               
             </div>
