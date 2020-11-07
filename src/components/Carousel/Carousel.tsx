@@ -112,10 +112,10 @@ function recomputeAndSetItemsPerGroupForWindowResize(winWidth: number, arrayBrea
 };
 
 function Carousel({ breakpoints="", items=[], itemIDs=[], cssprefix="cssprefix" }: PageProps) {
-    //////////////////// const [pos_item_group, setPosItemGroup] = useState(-1);
+    
     const prevItemsRef: React.MutableRefObject<{}[]> = useRef(null as any);
     const arrayBreakpointsRef: React.MutableRefObject<IBreakpoints[]> = useRef([]);
-    //////////////////// const prevItemsPerGroupRef: React.MutableRefObject<number> = useRef(0);
+    
     // console.log('testing Carousel memo');
     const [posItemGroupConcatItemsPerGroup, setPosItemGroupConcatItemsPerGroup] = useState(','); // comma delimiter
     const [counterForceRedraw, setCounterForceRedraw] = useState(0);
@@ -125,7 +125,7 @@ function Carousel({ breakpoints="", items=[], itemIDs=[], cssprefix="cssprefix" 
         window.addEventListener("resize", fn);
         
         if (items.length == 0) {
-            // nuttin
+            prevItemsRef.current = [];
         } else if (posItemGroupConcatItemsPerGroup == ',') {
             prevItemsRef.current = items;
             arrayBreakpointsRef.current = setupArrayBreakpoints( breakpoints);
@@ -187,7 +187,7 @@ function Carousel({ breakpoints="", items=[], itemIDs=[], cssprefix="cssprefix" 
 
             if (i == numberOfItemGroups - 1) { // last iteration for array_groups
                 let remaining: number = items.length % itemsPerGroup;
-                if ( remaining > 0) { // final groupItems doesn't meet full occupany of itemsPerGroup, so will have to padd it up
+                if ( remaining > 0) { // final groupItems doesn't meet full occupany of itemsPerGroup, so needs to padd it up
                     for (let i = 0; i < itemsPerGroup - remaining; i++) {
                         groupItems.push( <div className={`${cssprefix + '__carousel-slide'}`} key={`nill${i}`}></div>);
                     }

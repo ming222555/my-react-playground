@@ -45,10 +45,6 @@ $carousel-slider-grid-gap: 1rem;
             grid-column: navigate-to-previous-begin / navigate-to-previous-end;
             align-self: center;
             transform: rotate(45deg);
-
-            // &.nav-prev-hidden {
-            //     visibility: hidden;
-            // }
         }
 
         &-slider-tube {
@@ -71,10 +67,6 @@ $carousel-slider-grid-gap: 1rem;
             grid-column: navigate-to-next-begin / navigate-to-next-end;
             align-self: center;
             transform: rotate(225deg);
-
-            // &.nav-next-hidden {
-            //     visibility: hidden;
-            // }
         }
 
         &-slide-group {
