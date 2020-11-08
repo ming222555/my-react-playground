@@ -3,8 +3,8 @@ import './Carousel.scss';
 
 export interface PageProps {
     breakpoints: string; /* e.g. "768:4,1200:2" which says 
-                            "at viewport >= 768px, no. of items to show in carousel is 4",
-                            "at viewport >= 1200px, no. of items to show in carousel is 2"
+                            "at viewport >= 768px,  no. of visible items shown in carousel is 4",
+                            "at viewport >= 1200px, no. of visible items shown in carousel is 2"
                             *** IMPORTANT! THE viewport SIZES (px) ARE ASSUMED TO BE IN INCREASING ORDER! ***
                         */
     items: {}[]; /* array of jsx objects 
@@ -105,7 +105,7 @@ function recomputeAndSetItemsPerGroupForWindowResize(winWidth: number, arrayBrea
 
     let newPosItemGroup: number;
 
-    const absIdxOfLeadingItemInCurrItemGroup = ( posItemGroup * itemsPerGroup) + 1; // Idx starting with 1 wrt items
+    const absIdxOfLeadingItemInCurrItemGroup = ( posItemGroup * itemsPerGroup) + 1; // Idx starting with 1 wrt items array
 
     newPosItemGroup = Math.ceil( absIdxOfLeadingItemInCurrItemGroup / newItemsPerGroup) - 1;
     setter( newPosItemGroup + ',' + newItemsPerGroup);
@@ -185,7 +185,7 @@ function Carousel({ breakpoints="", items=[], itemIDs=[], cssprefix="cssprefix" 
                 groupItems.push( <div className={`${cssprefix}__carousel-slide`} key={itemIDs[k]}>{items[k]}</div>);
             }
 
-            if (i == numberOfItemGroups - 1) { // last iteration for array_groups
+            if (i == numberOfItemGroups - 1) { // last iteration for outer for loop
                 let remaining: number = items.length % itemsPerGroup;
                 if ( remaining > 0) { // final groupItems doesn't meet full occupany of itemsPerGroup, so needs to padd it up
                     for (let i = 0; i < itemsPerGroup - remaining; i++) {
