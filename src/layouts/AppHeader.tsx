@@ -7,7 +7,7 @@ import Co from 'layouts/Headers/Co/Co';
 import Boh from 'layouts/Headers/Boh/Boh';
 
 function AppHeader({...props}) {
-    console.log('function AppHeader props',props);
+    console.log('function AppHeader props zzzZZZZZ',props);
     const loc = useLocation();
     const pathname = loc.pathname;
 
