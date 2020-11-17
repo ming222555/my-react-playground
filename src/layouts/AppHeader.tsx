@@ -5,6 +5,36 @@ import './AppHeader.scss';
 import HomePageHeader from 'layouts/Headers/HomePageHeader/HomePageHeader';
 import Co from 'layouts/Headers/Co/Co';
 import Boh from 'layouts/Headers/Boh/Boh';
+import * as NewCartItemActions from 'store/newCartItem/newCartItem.actions';
+import * as AuthActions from 'store/auth/auth.actions';
+
+import { getState as _getState, appStore } from '../store/appStore';
+
+function getState() {
+    console.log('_getState() _getState() _getState() ', _getState());
+}
+
+// function newCartItem() {
+//     appStore.dispatch({
+//         type: NewCartItemActions.NEW_CART_ITEM,
+//         payload: {
+//             itemId: 'itemx',
+//             price: 123,
+//             qty: 456
+//         }
+//     } as NewCartItemActions.NewCartItem);
+// }
+function newCartItem() {
+    appStore.dispatch( new NewCartItemActions.NewCartItem({
+        itemId: 'itemx',
+        price: 123,
+        qty: 456
+    }));
+}
+
+function setUnauthenticated() {
+    appStore.dispatch( new AuthActions.SetUnauthenticated());
+}
 
 function AppHeader({...props}) {
     console.log('function AppHeader props zzzZZZZZ',props);
@@ -16,6 +46,9 @@ function AppHeader({...props}) {
             <header className="app__header">
                 <Co />
                 <HomePageHeader />
+                <button onClick={getState}>getstate</button>
+                <button onClick={newCartItem}>new cart item</button>
+                <button onClick={setUnauthenticated}>unauth</button>
             </header>
         );
     }

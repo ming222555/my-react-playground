@@ -6,6 +6,8 @@ import { useQuery, QueryCache, ReactQueryCacheProvider } from "react-query";
 import './App.scss';
 import HomePage from 'pages/HomePage/HomePage';
 import AppHeader from 'layouts/AppHeader';
+import AppStore from './store/appStore';
+
 const queryCache = new QueryCache();
 
 interface Zz {name: string, description: string, subscribers_count: string, stargazers_count: string, forks_count: string};
@@ -76,6 +78,7 @@ function App() {
 
         // <ReactQueryCacheProvider queryCache={queryCache}>
         <Router>
+            <AppStore />
             <Link to="/boh">Boh</Link>
             <Link to="/about">About</Link>
             <Link to="/dashboard/me">Dashboard</Link>
