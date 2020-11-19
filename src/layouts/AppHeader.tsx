@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLocation } from "react-router-dom";
+import { combineReducers } from 'redux';
 
 import './AppHeader.scss';
 import HomePageHeader from 'layouts/Headers/HomePageHeader/HomePageHeader';
@@ -8,14 +9,18 @@ import Boh from 'layouts/Headers/Boh/Boh';
 import * as NewCartItemActions from 'store/newCartItem/newCartItem.actions';
 import * as AuthActions from 'store/auth/auth.actions';
 
-import { getState as _getState, appStore } from '../store/appStore';
+import * as fromRecipes from 'store/recipes/recipes.reducers';
+import * as fromNewCartItem from 'store/newCartItem/newCartItem.reducers';
+import * as fromAuth from 'store/auth/auth.reducers';
+
+import store from '../store/store';
 
 function getState() {
-    console.log('_getState() _getState() _getState() ', _getState());
+    console.log('_getState() _getState() _getState() ', store.getState());
 }
 
 // function newCartItem() {
-//     appStore.dispatch({
+//     store.dispatch({
 //         type: NewCartItemActions.NEW_CART_ITEM,
 //         payload: {
 //             itemId: 'itemx',
@@ -25,7 +30,7 @@ function getState() {
 //     } as NewCartItemActions.NewCartItem);
 // }
 function newCartItem() {
-    appStore.dispatch( new NewCartItemActions.NewCartItem({
+    store.dispatch( new NewCartItemActions.NewCartItem({
         itemId: 'itemx',
         price: 123,
         qty: 456
@@ -33,7 +38,22 @@ function newCartItem() {
 }
 
 function setUnauthenticated() {
-    appStore.dispatch( new AuthActions.SetUnauthenticated());
+    store.dispatch( new AuthActions.SetUnauthenticated());
+}
+
+function replaceStore() {
+
+    const asyncReducers = {
+        recipes: fromRecipes.recipesReducer
+    };
+    
+    const newReducer = combineReducers({
+        newCartItem: fromNewCartItem.newCartItemReducer,
+        auth: fromAuth.authReducer,
+        ...asyncReducers
+    });
+
+    store.replaceReducer( newReducer);
 }
 
 function AppHeader({...props}) {
@@ -49,6 +69,7 @@ function AppHeader({...props}) {
                 <button onClick={getState}>getstate</button>
                 <button onClick={newCartItem}>new cart item</button>
                 <button onClick={setUnauthenticated}>unauth</button>
+                <button onClick={replaceStore}>replace store</button>
             </header>
         );
     }
