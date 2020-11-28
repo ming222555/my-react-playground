@@ -2,11 +2,9 @@ import React, { useState, useRef, useEffect } from 'react';
 import { BrowserRouter as Router, Link } from "react-router-dom"; // https://github.com/marmelab/react-admin/issues/3242
 import { useQuery, QueryCache, ReactQueryCacheProvider } from "react-query";
 
-
 import './App.scss';
 import HomePage from 'pages/HomePage/HomePage';
 import AppHeader from 'layouts/AppHeader';
-import AppStore from './store/appStore';
 
 const queryCache = new QueryCache();
 
@@ -78,7 +76,6 @@ function App() {
 
         // <ReactQueryCacheProvider queryCache={queryCache}>
         <Router>
-            <AppStore />
             <Link to="/boh">Boh</Link>
             <Link to="/about">About</Link>
             <Link to="/dashboard/me">Dashboard</Link>
@@ -94,8 +91,8 @@ function App() {
 
             <button onClick={() => setTexture('Rough')}>Rough</button>
             <button onClick={() => setTexture('Fine')}>Fine</button>
-        
-            </Router>
+    
+        </Router>
         // </ReactQueryCacheProvider>
     );
 }

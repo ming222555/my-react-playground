@@ -1,59 +1,39 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useLocation } from "react-router-dom";
-import { combineReducers } from 'redux';
 
 import './AppHeader.scss';
 import HomePageHeader from 'layouts/Headers/HomePageHeader/HomePageHeader';
 import Co from 'layouts/Headers/Co/Co';
 import Boh from 'layouts/Headers/Boh/Boh';
-import * as NewCartItemActions from 'store/newCartItem/newCartItem.actions';
-import * as AuthActions from 'store/auth/auth.actions';
+import { NewCartItem, ClearCartItem } from 'ducks/newCartItem';
+import { SetCartId, ClearCartId } from 'ducks/cartId';
 
-import * as fromRecipes from 'store/recipes/recipes.reducers';
-import * as fromNewCartItem from 'store/newCartItem/newCartItem.reducers';
-import * as fromAuth from 'store/auth/auth.reducers';
-
-import store from '../store/store';
+import store from  'ducks/redux-utils/store';
 
 function getState() {
     console.log('_getState() _getState() _getState() ', store.getState());
 }
 
-// function newCartItem() {
-//     store.dispatch({
-//         type: NewCartItemActions.NEW_CART_ITEM,
-//         payload: {
-//             itemId: 'itemx',
-//             price: 123,
-//             qty: 456
-//         }
-//     } as NewCartItemActions.NewCartItem);
-// }
 function newCartItem() {
-    store.dispatch( new NewCartItemActions.NewCartItem({
+    store.dispatch( new NewCartItem({
         itemId: 'itemx',
-        price: 123,
+        price: 654,
         qty: 456
     }));
 }
 
-function setUnauthenticated() {
-    store.dispatch( new AuthActions.SetUnauthenticated());
+function clearCartItem() {
+    store.dispatch( new ClearCartItem());
 }
 
-function replaceStore() {
+function setCartId() {
+    store.dispatch( new SetCartId({
+        cartId: 'cartX'
+    }));
+}
 
-    const asyncReducers = {
-        recipes: fromRecipes.recipesReducer
-    };
-    
-    const newReducer = combineReducers({
-        newCartItem: fromNewCartItem.newCartItemReducer,
-        auth: fromAuth.authReducer,
-        ...asyncReducers
-    });
-
-    store.replaceReducer( newReducer);
+function clearCartId() {
+    store.dispatch( new ClearCartId());
 }
 
 function AppHeader({...props}) {
@@ -68,8 +48,10 @@ function AppHeader({...props}) {
                 <HomePageHeader />
                 <button onClick={getState}>getstate</button>
                 <button onClick={newCartItem}>new cart item</button>
-                <button onClick={setUnauthenticated}>unauth</button>
-                <button onClick={replaceStore}>replace store</button>
+                <button onClick={clearCartItem}>clear cart item</button>
+                <button onClick={setCartId}>set cart id</button>
+                <button onClick={clearCartId}>clear cart id</button>
+                {/* <button onClick={replaceStore}>replace store</button> */}
             </header>
         );
     }
