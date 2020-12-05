@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import './PrimaryHeader.scss';
 import CartBadge from 'components/CartBadge/CartBadge';
+import CartBadgeWrapper from 'componentWrappers/CartBadgeWrapper/CartBadgeWrapper';
 
 function PrimaryHeader({ cartId, userEmail }:{[key:string]:any}) {
     console.log('function PrimaryHeader');
@@ -130,7 +131,8 @@ function PrimaryHeader({ cartId, userEmail }:{[key:string]:any}) {
                     </ul>
                 </li>
                 <li className="nav-item">
-                    <CartBadge qty={555} defaultWidth="1.5rem" defaultFontSize=".7rem" breakpoints="520:1.5rem:.7rem,768:1.5rem:.7rem,1200:2.25rem:.8rem" />
+                    <CartBadgeWrapper cartId={cartId} defaultWidth="1.5rem" defaultFontSize=".7rem" breakpoints="520:1.5rem:.7rem,768:1.5rem:.7rem,1200:2.25rem:.8rem">
+                    </CartBadgeWrapper>
                 </li>
             </ul>
         </nav>

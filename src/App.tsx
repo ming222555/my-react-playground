@@ -1,6 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { BrowserRouter as Router, Link } from "react-router-dom"; // https://github.com/marmelab/react-admin/issues/3242
-import { useQuery, QueryCache, ReactQueryCacheProvider } from "react-query";
+import React, { useState, useEffect } from 'react';
+import { useQuery, QueryCache } from "react-query";
 import { connect } from 'react-redux';
 import { Route, Switch } from "react-router";
 
@@ -81,15 +80,6 @@ function App({ cartId, userEmail }:{[key:string]:any}) {
     console.log('texture...',texture);
 
     return (
-        // <ReactQueryCacheProvider queryCache={queryCache}>
-        //     <Router>
-        //     <Switch>
-        //         <Layout exact path="/" component={Containers.Home} header={true} footer={true}/>
-        //         <Layout exact path="/about" component={Containers.About} header={true} footer={false}/>
-        //         <Layout exact path="/profile" component={Containers.Profile} header={true} footer={true}/>
-        //     </Switch>
-        //     </Router>
-        // </ReactQueryCacheProvider>
         <div className="App">
             <AppHeader {...{ cartId, userEmail }} />
             <main className="App__main">
@@ -114,7 +104,6 @@ function App({ cartId, userEmail }:{[key:string]:any}) {
                 </footer>
             </main>
         </div>
-        // </ReactQueryCacheProvider>
     );
 }
 
