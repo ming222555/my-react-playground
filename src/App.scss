@@ -1,3 +1,60 @@
-.app {
-    text-align: center;
+.App {
+    background: grey;
+
+    height: 100vh;
+    display: grid;
+    grid-template-rows: min-content 1fr;
+    grid-template-columns: 1fr;
+}
+.App__header {
+	background: gold;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+.App__main {
+    background: purple;
+    overflow-y: auto;
+}
+.App__content {
+    background: red;
+}
+.App__footer {
+    background: lightgreen;
+    padding: 1rem;
+}
+@media only screen and (min-width: calc(75em - 1px) ) {
+    .App__main {
+        overflow-y: hidden;
+    }
+}
+@media only screen and (min-width: 75em) { /* 1200px */
+    .App__content {
+        // width: 75em;
+        // max-width: 75em;
+        // margin-left: auto;
+        // margin-right: auto;
+        display: grid;
+        grid-template-columns: [app-left-edge] 1fr [app-content-begin] 75em [app-content-end] 1fr [app-right-edge];
+    }
+    .App__footer {
+        width: 75em;
+        max-width: 75em;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+@media only screen and (min-width: calc(75em + 1rem) ) {
+    .App__main {
+        overflow-y: auto;
+    }
+}
+@media only screen and (min-width: 91.125em) { /* 1458px */
+    .App__header {
+    	background: lightgrey;
+
+        width: 91.125em;
+        max-width: 91.125em;
+        margin-left: auto;
+        margin-right: auto;
+    }
 }

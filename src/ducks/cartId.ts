@@ -12,27 +12,27 @@ const initialState: State = {
 }
 
 const actionTypes = {
-    SET_CART_ID: 'SET_CART_ID',
-    CLEAR_CART_ID: 'CLEAR_CART_ID'
+    SET_CART_ID: 'CART_ID/SET_CART_ID',
+    CLEAR_CART_ID: 'CART_ID/CLEAR_CART_ID'
 }
 
 export class SetCartId implements PayloadAction {
     type = actionTypes.SET_CART_ID;
-    constructor(public payload: State) {}
+    constructor(public payload: string) {}
 }
 
 export class ClearCartId implements Action {
     type = actionTypes.CLEAR_CART_ID;
 }
 
-export type CartIdActions = SetCartId | ClearCartId; // usage, new CartId({ cartId: 'cartIdzz' })
+export type CartIdActions = SetCartId | ClearCartId; // use, new CartId({ cartId: 'cartIdzz' })
 
 const cartIdReducer = (state: any = initialState, action: CartIdActions): State => {
     switch (action.type) {
         case (actionTypes.SET_CART_ID):
-            return (action as SetCartId).payload;
+            return {...state, cartId: (action as SetCartId).payload};
         case (actionTypes.CLEAR_CART_ID):
-            return initialState;
+            return {...initialState};
         default:
             return state;
     }

@@ -1,10 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { BrowserRouter as Router, Link } from "react-router-dom"; // https://github.com/marmelab/react-admin/issues/3242
 import { useQuery, QueryCache, ReactQueryCacheProvider } from "react-query";
+import { connect } from 'react-redux';
+import { Route, Switch } from "react-router";
 
 import './App.scss';
 import HomePage from 'pages/HomePage/HomePage';
 import AppHeader from 'layouts/AppHeader';
+import { StoreShape, FullStoreShape } from 'ducks/redux-utils/types';
+
+const mapStateToProps = ( state: StoreShape) => ({
+    cartId: (state as FullStoreShape).CART_ID_NAMESPACE.cartId,
+    userEmail: (state as FullStoreShape).AUTH_NAMESPACE.userEmail
+});
 
 const queryCache = new QueryCache();
 
@@ -67,34 +75,47 @@ function useMeeReactQuery(arg_texture: string = '') {
     return {status, texture, asynSet};
 }
 
-function App() {
+function App({ cartId, userEmail }:{[key:string]:any}) {
     // const [texture, setTexture] = useMeeReactQuery('smooth');
     const {status, texture, asynSet: setTexture} = useMeeReactQuery('smooth');
     console.log('texture...',texture);
 
     return (
-
         // <ReactQueryCacheProvider queryCache={queryCache}>
-        <Router>
-            <Link to="/boh">Boh</Link>
-            <Link to="/about">About</Link>
-            <Link to="/dashboard/me">Dashboard</Link>
-            <Link to="/">Home</Link>
-            <div className="app">
-                <AppHeader />
-                <HomePage />
-                <Example />
-            </div>
-
-            texture {texture} <br/>
-            status {status}
-
-            <button onClick={() => setTexture('Rough')}>Rough</button>
-            <button onClick={() => setTexture('Fine')}>Fine</button>
-    
-        </Router>
+        //     <Router>
+        //     <Switch>
+        //         <Layout exact path="/" component={Containers.Home} header={true} footer={true}/>
+        //         <Layout exact path="/about" component={Containers.About} header={true} footer={false}/>
+        //         <Layout exact path="/profile" component={Containers.Profile} header={true} footer={true}/>
+        //     </Switch>
+        //     </Router>
+        // </ReactQueryCacheProvider>
+        <div className="App">
+            <AppHeader {...{ cartId, userEmail }} />
+            <main className="App__main">
+                <section className="App__content">
+                    <Switch>
+                        <Route exact path="/">
+                            <HomePage />
+                        </Route>
+                        <Route path="/example">
+                            <Example />
+                        </Route>
+                        {/* <Route path="/:user">
+                            <User />
+                        </Route> */}
+                        <Route>
+                            <HomePage />
+                        </Route>
+                    </Switch>
+                </section>
+                <footer className="App__footer">
+                    {/* <AppFooter /> */}ppppppp
+                </footer>
+            </main>
+        </div>
         // </ReactQueryCacheProvider>
     );
 }
 
-export default App;
+export default connect(mapStateToProps)(App);

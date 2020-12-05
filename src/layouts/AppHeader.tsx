@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { useLocation } from "react-router-dom";
+import { Route, Switch } from "react-router";
 
-import './AppHeader.scss';
-import HomePageHeader from 'layouts/Headers/HomePageHeader/HomePageHeader';
+import PrimaryHeader from 'layouts/Headers/PrimaryHeader/PrimaryHeader';
 import Co from 'layouts/Headers/Co/Co';
 import Boh from 'layouts/Headers/Boh/Boh';
 import { NewCartItem, ClearCartItem } from 'ducks/newCartItem';
@@ -27,66 +27,99 @@ function clearCartItem() {
 }
 
 function setCartId() {
-    store.dispatch( new SetCartId({
-        cartId: 'cartX'
-    }));
+    store.dispatch( new SetCartId( 'cartX'));
 }
 
 function clearCartId() {
     store.dispatch( new ClearCartId());
 }
 
-function AppHeader({...props}) {
-    console.log('function AppHeader props zzzZZZZZ',props);
-    const loc = useLocation();
-    const pathname = loc.pathname;
+// function AppHeader({ cartId, userEmail }:{[key:string]:any}) {
+//     console.log('function AppHeader props zzzZZZZZ','cartId ' + cartId + ' userEmail ' + userEmail);
+//     const loc = useLocation();
+//     const pathname = loc.pathname;
+//
+//     if ( pathname == '/') {
+//         return (
+//             <header className="app__header">
+//                 <PrimaryHeader {...{ cartId, userEmail }} />
+//             </header>
+//         );
+//     }
+//
+//     if ( pathname == '/login' && userEmail) {
+//         return (
+//             <header className="app__header">
+//                 <PrimaryHeader {...{ cartId, userEmail }} />
+//             </header>
+//         );
+//     }
+//
+//     if ( pathname == '/login') {
+//         return (
+//             <header className="app__header">
+//             </header>
+//         );
+//     }
+//
+//     if ( pathname == '/signup' && userEmail) {
+//         return (
+//             <header className="app__header">
+//                 <PrimaryHeader {...{ cartId, userEmail }} />
+//             </header>
+//         );
+//     }
+//
+//     if ( pathname == '/signup') {
+//         return (
+//             <header className="app__header">
+//             </header>
+//         );
+//     }
+//
+//     return (
+//         <header className="app__header">
+//             <PrimaryHeader {...{ cartId, userEmail }} />
+//         </header>
+//     );
+//
+//     /* const pos2ndSlash = pathname.indexOf( '/',1);
+//
+//     const pathnamesPrimaryHeader: string = '/about';
+//
+//     let out;
+// console.log('AppHeader AppHeader pathname',pathname);
+//     if ( pathnamesPrimaryHeader.indexOf( pathname) > -1) {
+//         out = <PrimaryHeader />
+//     }
+//
+//     return (
+//         <header className="app__header">
+//             {out} {pathname}
+//         </header>
+//     ); */
+// }
 
-    if ( pathname == '/') {
-        return (
-            <header className="app__header">
-                <Co />
-                <HomePageHeader />
-                <button onClick={getState}>getstate</button>
-                <button onClick={newCartItem}>new cart item</button>
-                <button onClick={clearCartItem}>clear cart item</button>
-                <button onClick={setCartId}>set cart id</button>
-                <button onClick={clearCartId}>clear cart id</button>
-                {/* <button onClick={replaceStore}>replace store</button> */}
-            </header>
-        );
-    }
-
-    if ( pathname == '/about') {
-        return (
-            <header className="app__header">
-                <Co />
-                <HomePageHeader />
-            </header>
-        );
-    }
-
-    if ( pathname == '/boh') {
-        return (
-            <header className="app__header">
-                <Boh />
-            </header>
-        );
-    }
-
-    const pos2ndSlash = pathname.indexOf( '/',1);
-
-    const pathnamesHomePageHeader: string = '/about';
-
-    let out;
-console.log('AppHeader AppHeader pathname',pathname);
-    if ( pathnamesHomePageHeader.indexOf( pathname) > -1) {
-        out = <HomePageHeader />
-    }
+function AppHeader({ cartId, userEmail }:{[key:string]:any}) {
     
     return (
-        <header className="app__header">
-            {out} {pathname}
+        <header className="App__header">
+            <Switch>
+                <Route exact path="/">
+                    <PrimaryHeader {...{ cartId, userEmail }} />
+                </Route>
+                <Route path="/example">
+                    {/* <ExampleHeader /> */}
+                </Route>
+                {/* <Route path="/:user">
+                    <UserHeader />
+                </Route> */}
+                <Route>
+                    <PrimaryHeader {...{ cartId, userEmail }} />
+                </Route>
+            </Switch>
         </header>
+        // </ReactQueryCacheProvider>
     );
 }
 

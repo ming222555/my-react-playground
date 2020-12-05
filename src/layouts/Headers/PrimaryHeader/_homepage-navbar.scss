@@ -1,0 +1,316 @@
+.navbar.homepage-navbar {
+    background: lightblue;
+
+    position: relative;
+
+    display: grid;
+    grid-template-columns: 1fr minmax( min-content, max-content) 1fr;
+    grid-column-gap: 1rem;
+
+    grid-template-areas: "navbar-cell-left navbar-cell-center navbar-cell-right";
+
+    .navbar-toggler {
+        background: yellow;
+        grid-area: navbar-cell-left;
+        justify-self: start;
+        align-self: center;
+        
+        border: none;
+        border-radius: 0;
+    
+        height: 1.5rem;
+        width: 1.5rem;
+    
+        border-top: 2px solid #000000;
+        border-bottom: 2px solid #000000;
+    }
+
+    .navbar-toggler::after {
+        background-color: #000;
+        height: 2px;
+        width: 100%;
+        content: "";
+        display: block;
+    }
+
+    .navbar-brand {
+        background: lightgreen;
+        grid-area: navbar-cell-center;
+        justify-self: center;
+        align-self: center;
+    }
+
+    .navbar-vert-propup-mobile {
+        grid-area: navbar-cell-center;
+        background: transparent;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        width: 1px;
+    
+        
+        border-top: 3px solid transparent;
+        border-bottom: 3px solid transparent;
+    }
+    
+    .navbar-nav.navbar-nav-main {
+        display: none;
+        position: relative;
+     
+        .nav-link {
+            padding-left: 1rem;
+            padding-right: 1rem;
+    
+            display: block;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+    
+            border-top: 3px solid transparent;
+            border-bottom: 3px solid transparent;
+    
+            text-decoration: none;
+        }
+        
+        .nav-link:hover {
+            border-bottom: 3px solid #000;
+        }
+        
+        .nav-item.dropdown:hover .nav-dropdown {
+            display: block;
+        }
+
+        
+        .nav-item.dropdown .nav-dropdown {
+            position: absolute;
+            display: none; /* st ff shows grid line nos. RESTORE!!!!!!!!! */
+            background: yellow;
+            /* left: 0; */
+            /* width: 100%; */
+
+            /* left: -25%;
+            width: 150%; */
+
+            left: 50%;
+            width: 100vw;
+            transform: translateX(-50%);
+
+            .dept-categories {
+                background: #fff;
+
+                display: grid;
+                grid-template-columns: 1fr minmax(22rem, max-content) repeat(2, minmax(min-content, max-content)) 1fr;
+
+                grid-template-areas: ". cell-listing cell-banner cell-banner2 .";
+                grid-gap: 2rem;
+                padding-top: 2rem;
+                padding-bottom: 2rem;
+            }
+            .dept-categories__listing {
+                grid-area: cell-listing;
+                justify-self: right;
+
+                background-color: lightgreen;
+
+                min-width: 60%;
+            }
+            .dept-categories__banner {
+                grid-area: cell-banner;
+                justify-self: center;
+
+                background: red;
+            }
+            .dept-categories__banner2 {
+                grid-area: cell-banner2;
+                justify-self: center;
+
+                background: yellow;
+            }
+            .dept-categories__banner-text {
+                grid-area: cell-banner;
+            }
+            .dept-categories__banner2-text {
+                grid-area: cell-banner2;
+            }
+            .dept-categories__banner-text, .dept-categories__banner2-text {
+                align-self: end;
+                margin: 1rem;
+                padding: .5rem 1rem;
+                background: white;
+
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            .dept-categories__banner-text {
+            }
+            .dept-categories__banner2-text {
+            }
+            .dept-categories__caption {
+                font-weight: bold;
+            }
+            .dept-categories__caption::after {
+                content: '\00a0';
+                display: block;
+            }
+            .dept-categories__item {
+            }
+            .dept-categories__link {
+                text-decoration: none;
+
+                line-height: 1.5;
+            }
+            .dept-categories__link:hover {
+                text-decoration: underline;
+            }
+        }
+
+    }
+    
+    .navbar-nav-right {
+        background: red;
+        grid-area: navbar-cell-right;
+        justify-self: end;
+        display: flex;
+        align-items: center;
+
+        .nav-item {
+            margin-right: .75rem;
+        }
+        
+        .nav-item:last-child {
+            margin-right: 0;
+        }
+
+        &__user-menu {
+            position: relative;
+        }
+
+        &__user-dropdown {
+            position: absolute;
+            border: 1px solid green;
+            width: 400%;
+            margin-left: -300%;
+            text-align: right;
+            background: #fff;
+            display: none;
+            padding: .5rem;
+            
+            .navbar-nav-right__dropdown-link {
+                display: block;
+                padding: .5rem;
+                white-space:nowrap;
+
+                margin-top: 2px;
+            }
+        }
+
+        &__user-icon-link:active + .navbar-nav-right__user-dropdown,
+        &__user-icon-link:focus + .navbar-nav-right__user-dropdown {
+            display: block;
+        }
+
+        ///////// https://stackoverflow.com/questions/39315359/flickering-fill-issue-on-svg-hover
+        // &__icon-link:hover,
+        // &__icon-link:active,
+        // &__icon-link:focus {
+        //     cursor: copy; // dbug
+        //
+        //     backface-visibility: hidden;
+        //     .navbar-nav-right__icon--mobile, .navbar-nav-right__icon--desktop {
+        //         opacity: 1;
+        //         width: 9rem; // dbug
+        //         backface-visibility: hidden;
+        //     }
+        // }
+
+        &__search-overlay {
+            position: fixed;
+            z-index: 1;
+
+            background: rgba(0, 0, 0, 0.5);
+
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+
+            display: none;
+        }
+
+        &__search-dropdown {
+            position: absolute;
+            z-index: 1;
+            
+            background: green;
+            border: 1px solid blue;
+
+            left: 0;
+            right: 0;
+            top: 100%;
+
+            display: none;
+        }
+
+        &__search-icon-link:active + .navbar-nav-right__search-overlay,
+        &__search-icon-link:focus + .navbar-nav-right__search-overlay,
+        &__search-icon-link:active ~ .navbar-nav-right__search-dropdown,
+        &__search-icon-link:focus ~ .navbar-nav-right__search-dropdown {
+            display: block;
+        }
+
+        &__icon--mobile {
+            height: 1.5rem;
+            width: 1.5rem;
+        }
+
+        &__icon--desktop {
+            display: none;
+        }
+    }
+    
+
+}
+
+@media only screen and (min-width: 75em) { /* 1200px */
+    
+    .navbar.homepage-navbar {
+        .navbar-toggler {
+            display: none;
+        }
+
+        .navbar-brand {
+            background: lightyellow;
+            grid-area: navbar-cell-left;
+            justify-self: start; /* center */
+            align-self: center;
+        }
+
+        .navbar-vert-propup-mobile {
+            display: none;
+        }
+    
+        .navbar-nav.navbar-nav-main {
+            display: flex;
+            align-items: flex-start;
+            background: lightgreen;
+            grid-area: navbar-cell-center;
+            justify-self: center;
+        }
+
+        .navbar-nav-right {
+            .nav-item {
+                margin-right: 1.125rem;
+            }
+            
+            &__icon--mobile {
+                display: none;
+            }   
+            &__icon--desktop {
+                display: block;
+                height: 2.25rem;
+                width: 2.25rem;
+            }
+        }
+
+    }
+
+}
