@@ -7,8 +7,8 @@ function CartBadgeWrapper({ cartId, defaultWidth="1rem", defaultFontSize="1rem",
 
     const { status, data, error } = useCartTally( cartId);
 
-    // let qty = data ? data.qty : 0;
-    let qty = data ? data.title : 0;
+    let qty = data ? data.qty : 0;
+    // let qty = data ? data.title : 0; // https://jsonplaceholder.typicode.com/posts/4
 
     if ( status === "error" ) {
         // TODO error
