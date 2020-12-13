@@ -9,7 +9,6 @@ import AppHeader from 'layouts/AppHeader';
 import { StoreShape, FullStoreShape } from 'ducks/redux-utils/types';
 
 const mapStateToProps = ( state: StoreShape) => ({
-    cartId: (state as FullStoreShape).CART_ID_NAMESPACE.cartId,
     userEmail: (state as FullStoreShape).AUTH_NAMESPACE.userEmail
 });
 

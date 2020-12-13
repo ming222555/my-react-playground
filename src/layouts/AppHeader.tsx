@@ -6,7 +6,6 @@ import PrimaryHeader from 'layouts/Headers/PrimaryHeader/PrimaryHeader';
 import Co from 'layouts/Headers/Co/Co';
 import Boh from 'layouts/Headers/Boh/Boh';
 import { NewCartItem, ClearCartItem } from 'ducks/newCartItem';
-import { SetCartId, ClearCartId } from 'ducks/cartId';
 
 import store from  'ducks/redux-utils/store';
 
@@ -16,22 +15,15 @@ function getState() {
 
 function newCartItem() {
     store.dispatch( new NewCartItem({
+        cartId: 'cartX',
         itemId: 'itemx',
-        price: 654,
+        itemName: 'itemxNamePoloshirt',
         qty: 456
     }));
 }
 
 function clearCartItem() {
     store.dispatch( new ClearCartItem());
-}
-
-function setCartId() {
-    store.dispatch( new SetCartId( 'cartX'));
-}
-
-function clearCartId() {
-    store.dispatch( new ClearCartId());
 }
 
 // function AppHeader({ cartId, userEmail }:{[key:string]:any}) {

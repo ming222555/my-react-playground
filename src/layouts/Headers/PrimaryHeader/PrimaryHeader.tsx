@@ -1,11 +1,22 @@
 import React, { useState } from 'react';
+import { useStore } from 'react-redux';
 
 import './PrimaryHeader.scss';
 import CartBadge from 'components/CartBadge/CartBadge';
 import CartBadgeWrapper from 'componentWrappers/CartBadgeWrapper/CartBadgeWrapper';
+import { NewCartItem } from 'ducks/newCartItem';
 
 function PrimaryHeader({ cartId, userEmail }:{[key:string]:any}) {
     console.log('function PrimaryHeader');
+    const store = useStore();
+
+    const dsp = () => {
+        store.dispatch( new NewCartItem({cartId: 'cartX', itemId: 'cartItemIDddd', itemName: 'cartItemNAMEddd', qty: 222}));
+    }
+
+    const dsp2 = () => {
+        store.dispatch( new NewCartItem({cartId: 'cartX', itemId: 'cartItemIDeee', itemName: 'cartItemNAMEeee', qty: 333}));
+    }
     
     return (
         
@@ -135,6 +146,7 @@ function PrimaryHeader({ cartId, userEmail }:{[key:string]:any}) {
                     </CartBadgeWrapper>
                 </li>
             </ul>
+            <button onClick={dsp}>dsp token eee</button> <button onClick={dsp2}>dsp token analog</button>
         </nav>
     );
 }

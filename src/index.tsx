@@ -7,13 +7,9 @@ import { QueryCache, ReactQueryCacheProvider } from "react-query";
 import './index.scss';
 import App from './App';
 import store from 'ducks/redux-utils/store';
-import { SetCartId } from 'ducks/cartId';
 /* import reportWebVitals from './reportWebVitals'; */
 
-// localStorage.setItem('cartId', 'someCartId');
-const cartIdFromLocalStorage = localStorage.getItem('cartId') || ''
-
-store.dispatch( new SetCartId( cartIdFromLocalStorage));
+const cartId = localStorage.getItem('cartId') || ''
 
 const queryCache = new QueryCache();
 
@@ -23,7 +19,7 @@ ReactDOM.render(
             <Provider store={store}>
                 <Router>
                     <Route path="/">
-                        <App />
+                        <App cartId={cartId} />
                     </Route>
                 </Router>
             </Provider>

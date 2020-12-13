@@ -8,8 +8,8 @@ export interface State {
 }
 
 const initialState: State = {
-    token: '',
-    userEmail: ''
+    token: 'inittoken123',
+    userEmail: 'initemail123'
 }
 
 const actionTypes = {
