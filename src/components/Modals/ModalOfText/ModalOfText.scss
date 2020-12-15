@@ -1,0 +1,33 @@
+.ModalOfText {
+    padding: 3rem;
+    border-radius: 5px;
+    background: green;
+
+    &.error {
+        background: red;
+    }
+
+    position: relative;
+
+    .xbutton {
+        position: absolute;
+        top: 0;
+        right: 0;
+        
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        border: 3px solid #FFFF00;
+    
+        background: green;
+        transform: translate(50%,-50%);
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &::after {
+            content: '\00274C';
+        }
+    }
+}

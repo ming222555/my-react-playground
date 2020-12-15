@@ -1,17 +1,19 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useStore } from 'react-redux';
 import watch from 'redux-watch';
-import { useMutation, useQueryCache } from "react-query";
+import { useQueryCache } from "react-query";
 import { AxiosResponse } from "axios";
 
 import INEW_CART_ITEM from "ducks/../../backend/src/interfaces/INEW_CART_ITEM.interface";
-import { NewCartItem, ClearCartItem } from 'ducks/newCartItem';
+import { NewCartItem } from 'ducks/newCartItem';
 
 import CartBadge from 'components/CartBadge/CartBadge';
 import useCartQty, { queryKey } from 'react-querys/query/cartQty';
 import useItemsPost from 'react-querys/mutation/carts/itemsPost';
 import { NEW_CART_ITEM_NAMESPACE_KEY } from 'ducks/redux-utils/types';
-import Modal from 'components/Modal/Modal';
+import Spinner from 'components/Modals/ModalOfSpinner/ModalOfSpinner';
+import TextModal from 'components/Modals/ModalOfText/ModalOfText';
+import ToastModal from 'components/Modals/ModalOfToast/ModalOfToast';
 
 function CartBadgeWrapper({ cartId, defaultWidth="1rem", defaultFontSize="1rem", breakpoints }:{[key:string]:any}) {
 
@@ -26,51 +28,25 @@ function CartBadgeWrapper({ cartId, defaultWidth="1rem", defaultFontSize="1rem",
         console.log('Error',(error as {message: string}).message);
     }
 
-    const [ isProcessing, setIsProcessing] = useState( false);
+    // isServerProcessing stages ... 'false','true','done'
+    const [ isServerProcessing, setisServerProcessing] = useState( 'false');
 
-    // const [mutateAddCartItem] = useMutation(
-    //     (item: {
-    //         itemId: string,
-    //         name: string,
-    //         qty: number
-    //     }) => axios.post('http://localhost:3001/api/carts/${cartId}/items', item),
-    //     {
-    //         // Optimistically update the cache value on mutate, but store
-    //         // the old value and return it so that it's accessible in case of
-    //         // an error
-    //         /* onMutate: text => {
-    //             setText('')
-    //             cache.cancelQueries('todos')
-    //
-    //             const previousValue = cache.getQueryData('todos')
-    //
-    //             cache.setQueryData('todos', old => ({
-    //             ...old,
-    //             items: [...old.items, text],
-    //             }))
-    //
-    //             return previousValue
-    //         }, */
-    //         // On failure, roll back to the previous value
-    //         /* onError: (err, variables, previousValue) =>
-    //             cache.setQueryData('todos', previousValue), */
-    //         // After success or failure, refetch the todos query
-    //         onSettled: () => {
-    //             cache.invalidateQueries( [queryKey, cartId], { exact: true });
-    //         },
-    //     }
-    // );
-    
+    const [ isServerError, setIsServerError] = useState( false);
+    const [ isServerSuccess, setIsServerSuccess] = useState( false);
+
     const [mutateAddCartItem] = useItemsPost(
         () => {
-            setIsProcessing( true)
+            setisServerProcessing( 'true')
         },
         ( data: AxiosResponse<INEW_CART_ITEM>) => {
-            console.log( 'itemName', data.data.itemName)
+            setIsServerSuccess( true)
+            // console.log( 'itemName', data.data.itemName);
         },
-        null,
+        (err: any, variables: any, previousValue: any) => {
+            setIsServerError( true)
+        },
         () => {
-            setIsProcessing( false);
+            setisServerProcessing( 'done');
             cache.invalidateQueries( [queryKey, cartId], { exact: true });
         }
     );
@@ -98,11 +74,12 @@ function CartBadgeWrapper({ cartId, defaultWidth="1rem", defaultFontSize="1rem",
                 }
             ))}>add cartitem</button>
             <CartBadge qty={qty} {...{ defaultWidth, defaultFontSize, breakpoints }} />
-                {isProcessing ? <Modal>
-                                        <div>
-                                            Processing in progress ...
-                                        </div>
-                                    </Modal> : null}
+            {isServerProcessing === 'false' ? null :
+                isServerProcessing === 'true' ? <Spinner /> : 
+                null
+            }
+            {isServerError ? <TextModal texts={['Server error while adding to cart']} error dismissCallback={() => setIsServerError( false)} /> : null}
+            {isServerSuccess ? <ToastModal texts={['Item xxx successfully added to cart']} dismissCallback={() => setIsServerSuccess( false)} /> : null}
         </React.Fragment>
     );
 }

@@ -1,0 +1,13 @@
+.ModalOfToast {
+    padding: 3rem;
+    border-radius: 5px;
+    background: green;
+
+    transform: translateY(-100vh);
+
+    &.on-screen {
+        transform: translateY(-25vh);
+    }
+
+    transition: transform 1s .5s;
+}
