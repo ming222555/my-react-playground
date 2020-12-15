@@ -11,6 +11,7 @@ import CartBadge from 'components/CartBadge/CartBadge';
 import useCartQty, { queryKey } from 'react-querys/query/cartQty';
 import useItemsPost from 'react-querys/mutation/carts/itemsPost';
 import { NEW_CART_ITEM_NAMESPACE_KEY } from 'ducks/redux-utils/types';
+import Modal from 'components/Modal/Modal';
 
 function CartBadgeWrapper({ cartId, defaultWidth="1rem", defaultFontSize="1rem", breakpoints }:{[key:string]:any}) {
 
@@ -24,6 +25,8 @@ function CartBadgeWrapper({ cartId, defaultWidth="1rem", defaultFontSize="1rem",
         // TODO error
         console.log('Error',(error as {message: string}).message);
     }
+
+    const [ isProcessing, setIsProcessing] = useState( false);
 
     // const [mutateAddCartItem] = useMutation(
     //     (item: {
@@ -59,12 +62,15 @@ function CartBadgeWrapper({ cartId, defaultWidth="1rem", defaultFontSize="1rem",
     // );
     
     const [mutateAddCartItem] = useItemsPost(
-        null,
+        () => {
+            setIsProcessing( true)
+        },
         ( data: AxiosResponse<INEW_CART_ITEM>) => {
-            console.log( 'itemName', data.data.itemName);
+            console.log( 'itemName', data.data.itemName)
         },
         null,
         () => {
+            setIsProcessing( false);
             cache.invalidateQueries( [queryKey, cartId], { exact: true });
         }
     );
@@ -92,6 +98,11 @@ function CartBadgeWrapper({ cartId, defaultWidth="1rem", defaultFontSize="1rem",
                 }
             ))}>add cartitem</button>
             <CartBadge qty={qty} {...{ defaultWidth, defaultFontSize, breakpoints }} />
+                {isProcessing ? <Modal>
+                                        <div>
+                                            Processing in progress ...
+                                        </div>
+                                    </Modal> : null}
         </React.Fragment>
     );
 }
