@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, QueryCache } from "react-query";
 import { connect } from 'react-redux';
-import { Route, Switch } from "react-router";
+import { Route, Switch, Link } from "react-router-dom";
 
 import './App.scss';
 import HomePage from 'pages/HomePage/HomePage';
-import AppHeader from 'layouts/AppHeader';
+import SomePage from 'pages/SomePage/SomePage';
+import PrimaryHeader from 'layouts/Headers/PrimaryHeader/PrimaryHeader';
+import AppBody from './AppBody';
 import { StoreShape, FullStoreShape } from 'ducks/redux-utils/types';
 
 const mapStateToProps = ( state: StoreShape) => ({
@@ -73,35 +75,68 @@ function useMeeReactQuery(arg_texture: string = '') {
     return {status, texture, asynSet};
 }
 
+// function App({ cartId, userEmail }:{[key:string]:any}) {
+//     // const [texture, setTexture] = useMeeReactQuery('smooth');
+//     const {status, texture, asynSet: setTexture} = useMeeReactQuery('smooth');
+//     console.log('texture...',texture);
+//
+//     return (
+//         <div className="App"> <Link to="/somePage">somePage</Link>
+//             <Switch>
+//                 <Route exact path="/">
+//                     <AppHeader>
+//                         <PrimaryHeader {...{ cartId, userEmail }} />
+//                     </AppHeader>
+//                     <main className="App__main">
+//                         <section className="App__content">
+//                             <HomePage />
+//                         </section>
+//                         <footer className="App__footer">
+//                             {/* <AppFooter /> */}
+//                         </footer>
+//                     </main>
+//                 </Route>
+//                 <Route path="/somePage">
+//                     <AppHeader>
+//                         <PrimaryHeader {...{ cartId, userEmail }} />               {/* <SomePageHeader /> */}
+//                     </AppHeader>
+//                     <main className="App__main">
+//                         <section className="App__content">
+//                             <SomePage />
+//                         </section>
+//                         <footer className="App__footer">
+//                             {/* <SomePageFooter /> */}
+//                         </footer>
+//                     </main>
+//                 </Route>
+//             </Switch>
+//         </div>
+//     );
+// }
+
 function App({ cartId, userEmail }:{[key:string]:any}) {
     // const [texture, setTexture] = useMeeReactQuery('smooth');
     const {status, texture, asynSet: setTexture} = useMeeReactQuery('smooth');
     console.log('texture...',texture);
 
     return (
-        <div className="App">
-            <AppHeader {...{ cartId, userEmail }} />
-            <main className="App__main">
-                <section className="App__content">
-                    <Switch>
-                        <Route exact path="/">
-                            <HomePage />
-                        </Route>
-                        <Route path="/example">
-                            <Example />
-                        </Route>
-                        {/* <Route path="/:user">
-                            <User />
-                        </Route> */}
-                        <Route>
-                            <HomePage />
-                        </Route>
-                    </Switch>
-                </section>
-                <footer className="App__footer">
-                    {/* <AppFooter /> */}ppppppp
-                </footer>
-            </main>
+        <div className="App"> <Link to="/somePage">somePage</Link>
+            <Switch>
+                <Route exact path="/">
+                    <AppBody>
+                        <PrimaryHeader {...{ cartId, userEmail }} />
+                        <HomePage />
+                        {null}
+                    </AppBody>
+                </Route>
+                <Route path="/somePage">
+                    <AppBody>
+                        <PrimaryHeader {...{ cartId, userEmail }} />
+                        <SomePage />
+                        {null}
+                    </AppBody>
+                </Route>
+            </Switch>
         </div>
     );
 }
