@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import './HomePage.scss';
-import Carousel, { PageProps } from 'components/Carousel/Carousel';
+import Carousel, { PageProps } from 'components/util/Carousel/Carousel';
 
 const arrayCarouselProps: PageProps[] = [
     {

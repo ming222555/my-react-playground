@@ -7,13 +7,13 @@ import { AxiosResponse } from "axios";
 import INEW_CART_ITEM from "ducks/../../backend/src/interfaces/INEW_CART_ITEM.interface";
 import { NewCartItem } from 'ducks/newCartItem';
 
-import CartBadge from 'components/CartBadge/CartBadge';
+import CartBadge from 'components/util/CartBadge/CartBadge';
 import useCartQty, { queryKey } from 'react-querys/query/cartQty';
 import useItemsPost from 'react-querys/mutation/carts/itemsPost';
 import { NEW_CART_ITEM_NAMESPACE_KEY } from 'ducks/redux-utils/types';
-import Spinner from 'components/Modals/ModalOfSpinner/ModalOfSpinner';
-import TextModal from 'components/Modals/ModalOfText/ModalOfText';
-import ToastModal from 'components/Modals/ModalOfToast/ModalOfToast';
+import Spinner from 'components/util/Modals/ModalOfSpinner/ModalOfSpinner';
+import TextModal from 'components/util/Modals/ModalOfText/ModalOfText';
+import ToastModal from 'components/util/Modals/ModalOfToast/ModalOfToast';
 
 function CartBadgeWrapper({ cartId, defaultWidth="1rem", defaultFontSize="1rem", breakpoints }:{[key:string]:any}) {
 

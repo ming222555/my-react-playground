@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { useStore } from 'react-redux';
 
 import './PrimaryHeader.scss';
-import CartBadge from 'components/CartBadge/CartBadge';
+import CartBadge from 'components/util/CartBadge/CartBadge';
 import CartBadgeWrapper from 'componentWrappers/CartBadgeWrapper/CartBadgeWrapper';
 import { NewCartItem } from 'ducks/newCartItem';
+import Brand from 'components/domain/Brand/Brand';
 
 function PrimaryHeader({ cartId, userEmail }:{[key:string]:any}) {
     console.log('function PrimaryHeader');
@@ -22,7 +23,7 @@ function PrimaryHeader({ cartId, userEmail }:{[key:string]:any}) {
         
         <nav className="navbar primary-navbar">
             <button className="navbar-toggler" type="button"></button>
-            <a className="navbar-brand" href="#"><img alt="Spree Demo Site" title="Spree Demo Site" src="logo-spree.svg" /></a>
+            <Brand clazz="navbar-brand" />
             <div className="navbar-vert-propup-mobile"><h1>&nbsp;</h1></div>
 
             <ul className="navbar-nav navbar-nav-main">
