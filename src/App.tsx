@@ -120,7 +120,7 @@ function App({ cartId, userEmail }:{[key:string]:any}) {
     console.log('texture...',texture);
 
     return (
-        <div className="App"> <Link to="/somePage">somePage</Link>
+        <div className="App"> {/* <Link to="/somePage">somePage</Link> */}
             <Switch>
                 <Route exact path="/">
                     <AppBody>

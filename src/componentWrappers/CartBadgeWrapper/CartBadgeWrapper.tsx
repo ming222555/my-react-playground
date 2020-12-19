@@ -5,8 +5,6 @@ import { useQueryCache } from "react-query";
 import { AxiosResponse } from "axios";
 
 import INEW_CART_ITEM from "ducks/../../backend/src/interfaces/INEW_CART_ITEM.interface";
-import { NewCartItem } from 'ducks/newCartItem';
-
 import CartBadge from 'components/util/CartBadge/CartBadge';
 import useCartQty, { queryKey } from 'react-querys/query/cartQty';
 import useItemsPost from 'react-querys/mutation/carts/itemsPost';
@@ -15,8 +13,7 @@ import Spinner from 'components/util/Modals/ModalOfSpinner/ModalOfSpinner';
 import TextModal from 'components/util/Modals/ModalOfText/ModalOfText';
 import ToastModal from 'components/util/Modals/ModalOfToast/ModalOfToast';
 
-function CartBadgeWrapper({ cartId, defaultWidth="1rem", defaultFontSize="1rem", breakpoints }:{[key:string]:any}) {
-
+function CartBadgeWrapper({ cartId, outerClazz }:{[key:string]:any}) {
     const { status, data, error } = useCartQty( cartId);
     const store = useStore();
     const cache = useQueryCache();
@@ -64,16 +61,7 @@ function CartBadgeWrapper({ cartId, defaultWidth="1rem", defaultFontSize="1rem",
 
     return  (
         <React.Fragment>
-            <button onClick={() => 
-            store.dispatch( new NewCartItem(
-                {
-                    cartId,
-                    itemId: 'axiosPutItemId1',
-                    itemName: 'axiosPutName1',
-                    qty: 19991
-                }
-            ))}>add cartitem</button>
-            <CartBadge qty={qty} {...{ defaultWidth, defaultFontSize, breakpoints }} />
+            <CartBadge qty={qty} outerClazz={outerClazz} />
             {isServerProcessing === 'false' ? null :
                 isServerProcessing === 'true' ? <Spinner /> : 
                 null

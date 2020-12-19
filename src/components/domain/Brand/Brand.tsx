@@ -3,6 +3,10 @@ import { Link } from 'react-router-dom';
 
 import './Brand.scss';
 
+/*
+ *  Props
+    outerClazz: string; consumer specified className
+*/
 function Brand({ outerClazz=""}:{[key:string]:any}) {
 
     const brand = process.env.REACT_APP_BRAND;

@@ -143,11 +143,20 @@ function PrimaryHeader({ cartId, userEmail }:{[key:string]:any}) {
                     </ul>
                 </li>
                 <li className="nav-item">
-                    <CartBadgeWrapper cartId={cartId} defaultWidth="1.5rem" defaultFontSize=".7rem" breakpoints="520:1.5rem:.7rem,768:1.5rem:.7rem,1200:2.25rem:.8rem">
+                    <CartBadgeWrapper cartId={cartId} outerClazz="PrimaryHeader">
                     </CartBadgeWrapper>
                 </li>
             </ul>
             <button onClick={dsp}>dsp token eee</button> <button onClick={dsp2}>dsp token analog</button>
+            <button onClick={() => 
+            store.dispatch( new NewCartItem(
+                {
+                    cartId,
+                    itemId: 'axiosPutItemId1',
+                    itemName: 'axiosPutName1',
+                    qty: 19992
+                }
+            ))}>add cartitem</button>
         </nav>
     );
 }
