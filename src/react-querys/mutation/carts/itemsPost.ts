@@ -5,7 +5,7 @@ import INEW_CART_ITEM from "ducks/../../backend/src/interfaces/INEW_CART_ITEM.in
 
 function useItemsPost( onMutate: any, onSuccess: ( data: AxiosResponse<INEW_CART_ITEM>) => any, onError: any, onSettled: any) {
     return useMutation(
-        (item: INEW_CART_ITEM) => axios.post(`http://localhost:3001/api/carts/${item.cartId}/items`, item),
+        (item: INEW_CART_ITEM) => axios.post(`${process.env.REACT_APP_API_ENDPOINT}carts/${item.cartId}/items`, item),
         {
             onMutate,
             onSuccess,

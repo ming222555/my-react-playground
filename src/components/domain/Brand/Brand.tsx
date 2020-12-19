@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import './Brand.scss';
+
 function Brand({ clazz=""}:{[key:string]:any}) {
 
     const brand = process.env.REACT_APP_BRAND;
