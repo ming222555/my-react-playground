@@ -23,7 +23,7 @@ function PrimaryHeader({ cartId, userEmail }:{[key:string]:any}) {
         
         <nav className="navbar primary-navbar">
             <button className="navbar-toggler" type="button"></button>
-            <Brand clazz="navbar-brand" />
+            <Brand outerClazz="navbar-brand" />
             <div className="navbar-vert-propup-mobile"><h1>&nbsp;</h1></div>
 
             <ul className="navbar-nav navbar-nav-main">

@@ -3,13 +3,13 @@ import { Link } from 'react-router-dom';
 
 import './Brand.scss';
 
-function Brand({ clazz=""}:{[key:string]:any}) {
+function Brand({ outerClazz=""}:{[key:string]:any}) {
 
     const brand = process.env.REACT_APP_BRAND;
     const src = process.env.REACT_APP_BRAND_IMAGE_SRC;
 
     return (
-        <Link className={clazz ? clazz + " Brand" : "Brand"} to="/"><img alt={brand} title={brand} src={src} /></Link>
+        <Link className={outerClazz ? outerClazz + " Brand" : "Brand"} to="/"><img alt={brand} title={brand} src={src} /></Link>
     );
 
 }

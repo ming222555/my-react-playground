@@ -33,7 +33,7 @@
         display: block;
     }
 
-    .navbar-brand {
+    .navbar-brand.Brand {
         background: lightgreen;
         grid-area: navbar-cell-center;
         justify-self: center;
@@ -273,7 +273,7 @@
             display: none;
         }
 
-        .navbar-brand {
+        .navbar-brand.Brand {
             background: lightyellow;
             grid-area: navbar-cell-left;
             justify-self: start; /* center */
