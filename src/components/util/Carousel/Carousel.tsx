@@ -14,7 +14,6 @@ export interface PageProps {
                        ]
                     */
     itemIDs: string[];
-    cssprefix?: string;
 }
 
 interface IBreakpoints {
@@ -111,7 +110,7 @@ function recomputeAndSetItemsPerGroupForWindowResize(winWidth: number, arrayBrea
     setter( newPosItemGroup + ',' + newItemsPerGroup);
 };
 
-function Carousel({ breakpoints="", items=[], itemIDs=[], cssprefix="cssprefix" }: PageProps) {
+function Carousel({ breakpoints="", items=[], itemIDs=[]}: PageProps) {
     
     const prevItemsRef: React.MutableRefObject<{}[]> = useRef(null as any);
     const arrayBreakpointsRef: React.MutableRefObject<IBreakpoints[]> = useRef([]);
@@ -150,113 +149,119 @@ function Carousel({ breakpoints="", items=[], itemIDs=[], cssprefix="cssprefix" 
         return () => window.removeEventListener("resize", fn);
     });
 
-    let out;
-
     if (items.length == 0) {
-        out = null;
-    } else if (posItemGroupConcatItemsPerGroup == ',') {
-        out = (
-            <div className={`${cssprefix}__carousel-wrap`}>
-                <p className={`${cssprefix}__carousel-is-loading`}>Initializing...</p>
+
+        return null;
+
+    }
+    
+    if (posItemGroupConcatItemsPerGroup == ',') {
+
+        return (
+            <div className="Carousel">
+                <p className="Carousel__loading">Initializing...</p>
             </div>
         );
-    } else if (prevItemsRef.current != items) {
-        out = (
-            <div className={`${cssprefix}__carousel-wrap`}>
-                <p className={`${cssprefix}__carousel-is-loading`}>Re-loading...</p>
+
+    }
+    
+    if (prevItemsRef.current != items) {
+
+        return (
+            <div className="Carousel">
+                <p className="Carousel__loading">Loading...</p>
             </div>
         );
-    } else {
+
+    }
+    
+
+    const pair = posItemGroupConcatItemsPerGroup.split(',');
+    const itemsPerGroup = parseInt( pair[1]);
+    const numberOfItemGroups = Math.ceil(items.length / itemsPerGroup);
+    // console.log('out posItemGroupConcatItemsPerGroup',posItemGroupConcatItemsPerGroup);
+    const array_groups = [];
+
+    for (let i = 0; i < numberOfItemGroups; i++) {
+        const posHeadItemInGroup: number = i*itemsPerGroup;
+        const posTailItemInGroup = i < numberOfItemGroups - 1 ? posHeadItemInGroup + itemsPerGroup - 1 : items.length - 1;
+        const groupkey: string = itemIDs[posHeadItemInGroup] + itemIDs[posTailItemInGroup];
         
-        const pair = posItemGroupConcatItemsPerGroup.split(',');
-        const itemsPerGroup = parseInt( pair[1]);
-        const numberOfItemGroups = Math.ceil(items.length / itemsPerGroup);
-        // console.log('out posItemGroupConcatItemsPerGroup',posItemGroupConcatItemsPerGroup);
-        const array_groups = [];
-
-        for (let i = 0; i < numberOfItemGroups; i++) {
-            const posHeadItemInGroup: number = i*itemsPerGroup;
-            const posTailItemInGroup = i < numberOfItemGroups - 1 ? posHeadItemInGroup + itemsPerGroup - 1 : items.length - 1;
-            const groupkey: string = itemIDs[posHeadItemInGroup] + itemIDs[posTailItemInGroup];
-            
-            const groupItems = [];
-            
-            for (let k = posHeadItemInGroup; k <= posTailItemInGroup; k++) {
-                groupItems.push( <div className={`${cssprefix}__carousel-slide`} key={itemIDs[k]}>{items[k]}</div>);
-            }
-
-            if (i == numberOfItemGroups - 1) { // last iteration for outer for loop
-                let remaining: number = items.length % itemsPerGroup;
-                if ( remaining > 0) { // final groupItems doesn't meet full occupany of itemsPerGroup, so needs to padd it up
-                    for (let i = 0; i < itemsPerGroup - remaining; i++) {
-                        groupItems.push( <div className={`${cssprefix}__carousel-slide`} key={`nill${i}`}></div>);
-                    }
-                }
-            }
-
-            // array_groups.push(<div className={`${cssprefix}__carousel-slide-group`} key={groupkey} id={groupkey} style={{gridTemplateColumns: `repeat(${itemsPerGroup},1fr)`}}>{groupItems}</div>)
-            array_groups.push(<div className={`${cssprefix}__carousel-slide-group`} key={groupkey} id={groupkey}>{groupItems}</div>)
+        const groupItems = [];
+        
+        for (let k = posHeadItemInGroup; k <= posTailItemInGroup; k++) {
+            groupItems.push( <div className="Carousel__body-slide" key={itemIDs[k]}>{items[k]}</div>);
         }
 
-        const posItemGroup = parseInt( pair[0]);
+        if (i == numberOfItemGroups - 1) { // last iteration for outer for loop
+            let remaining: number = items.length % itemsPerGroup;
+            if ( remaining > 0) { // final groupItems doesn't meet full occupany of itemsPerGroup, so needs to padd it up
+                for (let i = 0; i < itemsPerGroup - remaining; i++) {
+                    groupItems.push( <div className="Carousel__body-slide" key={`nill${i}`}></div>);
+                }
+            }
+        }
 
-        out = (
-            <div className={`${cssprefix}__carousel-wrap`}>
-                    <div className={`${cssprefix}__carousel`}>
-                        <button className={`${cssprefix}__carousel-nav navigate-to-previous ${posItemGroup > 0 ? "" : "nav-hidden"}`} onClick={() => recomputeAndSetPosItemGroupForNavOnclick( NavDirection.Prev, window.innerWidth, arrayBreakpointsRef.current, items.length, posItemGroup, itemsPerGroup, setPosItemGroupConcatItemsPerGroup)}></button>
-                        <div className={`${cssprefix}__carousel-slider-tube`}>
-                            <div className={`${cssprefix}__carousel-slider`} style={{marginLeft: `${-100 * posItemGroup}%`}}>
-                                {array_groups}
-                                {/* <div className={`${cssprefix}__carousel-slide-group`}>
-                                    <div className={`${cssprefix}__carousel-slide`}>
-                                        <div>
-                                            <p>item 1</p>
-                                            <p>item 1</p>
-                                            <p>item 1</p>
-                                            <p>item 1</p>
-                                            <p>item 1</p>
-                                        </div>
-                                    </div>
-                                    <div className={`${cssprefix}__carousel-slide`}>
-                                        <div>
-                                            <p>item 2</p>
-                                            <p>item 2</p>
-                                            <p>item 2</p>
-                                            <p>item 2</p>
-                                            <p>item 2</p>
-                                        </div>
-                                    </div>
-                                </div> */}
-                                {/* <div className={`${cssprefix}__carousel-slide-group`}>
-                                    <div className={`${cssprefix}__carousel-slide`}>
-                                        <div>
-                                            <p>item 3</p>
-                                            <p>item 3</p>
-                                            <p>item 3</p>
-                                            <p>item 3</p>
-                                            <p>item 3</p>
-                                        </div>
-                                    </div>
-                                    <div className={`${cssprefix}__carousel-slide`}>
-                                        <div>
-                                            <p>item 4</p>
-                                            <p>item 4</p>
-                                            <p>item 4</p>
-                                            <p>item 4</p>
-                                            <p>item 4</p>
-                                        </div>
-                                    </div>
-                                </div> */}
-                            </div>
-                        </div>
-                        <button className={`${cssprefix}__carousel-nav navigate-to-next ${items.length > itemsPerGroup ? "" : "nav-hidden"}`} onClick={() => recomputeAndSetPosItemGroupForNavOnclick( NavDirection.Next, window.innerWidth, arrayBreakpointsRef.current, items.length, posItemGroup, itemsPerGroup, setPosItemGroupConcatItemsPerGroup)}></button>
-                    </div>
-              
-            </div>
-        );
+        // array_groups.push(<div className="Carousel__body-slide-group" key={groupkey} id={groupkey} style={{gridTemplateColumns: `repeat(${itemsPerGroup},1fr)`}}>{groupItems}</div>)
+        array_groups.push(<div className="Carousel__body-slide-group" key={groupkey} id={groupkey}>{groupItems}</div>)
     }
 
-    return out;
+    const posItemGroup = parseInt( pair[0]);
+
+    return (
+        <div className="Carousel">
+                <div className="Carousel__body">
+                    <button className={`"Carousel__body-nav navigate-to-previous ${posItemGroup > 0 ? "" : "nav-hidden"}`} onClick={() => recomputeAndSetPosItemGroupForNavOnclick( NavDirection.Prev, window.innerWidth, arrayBreakpointsRef.current, items.length, posItemGroup, itemsPerGroup, setPosItemGroupConcatItemsPerGroup)}></button>
+                    <div className="Carousel__body-slider-tube">
+                        <div className="Carousel__body-slider" style={{marginLeft: `${-100 * posItemGroup}%`}}>
+                            {array_groups}
+                            {/* <div className="Carousel__body-slide-group">
+                                <div className="Carousel__body-slide">
+                                    <div>
+                                        <p>item 1</p>
+                                        <p>item 1</p>
+                                        <p>item 1</p>
+                                        <p>item 1</p>
+                                        <p>item 1</p>
+                                    </div>
+                                </div>
+                                <div className="Carousel__body-slide">
+                                    <div>
+                                        <p>item 2</p>
+                                        <p>item 2</p>
+                                        <p>item 2</p>
+                                        <p>item 2</p>
+                                        <p>item 2</p>
+                                    </div>
+                                </div>
+                            </div> */}
+                            {/* <div className="Carousel__body-slide-group">
+                                <div className="Carousel__body-slide">
+                                    <div>
+                                        <p>item 3</p>
+                                        <p>item 3</p>
+                                        <p>item 3</p>
+                                        <p>item 3</p>
+                                        <p>item 3</p>
+                                    </div>
+                                </div>
+                                <div className="Carousel__body-slide">
+                                    <div>
+                                        <p>item 4</p>
+                                        <p>item 4</p>
+                                        <p>item 4</p>
+                                        <p>item 4</p>
+                                        <p>item 4</p>
+                                    </div>
+                                </div>
+                            </div> */}
+                        </div>
+                    </div>
+                    <button className={`Carousel__body-nav navigate-to-next ${items.length > itemsPerGroup ? "" : "nav-hidden"}`} onClick={() => recomputeAndSetPosItemGroupForNavOnclick( NavDirection.Next, window.innerWidth, arrayBreakpointsRef.current, items.length, posItemGroup, itemsPerGroup, setPosItemGroupConcatItemsPerGroup)}></button>
+                </div>
+            
+        </div>
+    );
 }
 
 export default React.memo(Carousel);

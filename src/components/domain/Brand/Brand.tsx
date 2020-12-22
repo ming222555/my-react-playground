@@ -5,7 +5,7 @@ import './Brand.scss';
 
 /*
  *  Props
-    outerClazz: string; consumer specified className
+    outerClazz: string; consumer specified css class
 */
 function Brand({ outerClazz=""}:{[key:string]:any}) {
 

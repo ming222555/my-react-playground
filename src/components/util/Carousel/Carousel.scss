@@ -1,96 +1,97 @@
 $carousel-slider-grid-gap: 1rem;
 
-.cssprefix {
-    &__carousel {
-        overflow-x: hidden; // overflowX due to transform: rotate(225deg) of .navigate-to-next
+.Carousel {
+}
 
-        margin-top: 1rem;
-        background: green;
-        display: grid;
-        grid-template-columns: [navigate-to-previous-begin] min-content [navigate-to-previous-end slider-begin] 1fr [slider-end navigate-to-next-begin] min-content [navigate-to-next-end];
+.Carousel__body {
+    overflow-x: hidden; // overflowX due to transform: rotate(225deg) of .navigate-to-next
 
-        &-nav {
+    margin-top: 1rem;
+    background: green;
+    display: grid;
+    grid-template-columns: [navigate-to-previous-begin] min-content [navigate-to-previous-end slider-begin] 1fr [slider-end navigate-to-next-begin] min-content [navigate-to-next-end];
+
+    &-nav {
+        display: block;
+        border: none;
+        outline: none;
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 50%;
+        margin: 0 .25rem;
+
+        cursor: pointer;
+    }
+
+    &-nav.navigate-to-previous, &-nav.navigate-to-next {
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &::after {
+            content: '';
             display: block;
-            border: none;
-            outline: none;
-            width: 1.5rem;
-            height: 1.5rem;
-            border-radius: 50%;
-            margin: 0 .25rem;
-
-            cursor: pointer;
+            width: .75rem;
+            height: .75rem;
+            border-bottom: 2px solid blue;
+            border-left: 2px solid blue;
         }
 
-        &-nav.navigate-to-previous, &-nav.navigate-to-next {
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            &::after {
-                content: '';
-                display: block;
-                width: .75rem;
-                height: .75rem;
-                border-bottom: 2px solid blue;
-                border-left: 2px solid blue;
-            }
-
-            &.nav-hidden {
-                visibility: hidden;
-            }
+        &.nav-hidden {
+            visibility: hidden;
         }
-        
-        &-nav.navigate-to-previous {
-            grid-column: navigate-to-previous-begin / navigate-to-previous-end;
-            align-self: center;
-            transform: rotate(45deg);
-        }
+    }
+    
+    &-nav.navigate-to-previous {
+        grid-column: navigate-to-previous-begin / navigate-to-previous-end;
+        align-self: center;
+        transform: rotate(45deg);
+    }
 
-        &-slider-tube {
-            grid-column: slider-begin / slider-end;
-            overflow-x: hidden;
-        }
+    &-slider-tube {
+        grid-column: slider-begin / slider-end;
+        overflow-x: hidden;
+    }
 
-        &-slider {
-            width: 100%;
-            display: flex;
-            flex-wrap: nowrap;
-            /*margin-left: -100%;*/ // use js
-            transition: all .5s;
+    &-slider {
+        width: 100%;
+        display: flex;
+        flex-wrap: nowrap;
+        /*margin-left: -100%;*/ // use js
+        transition: all .5s;
 
-            // https://css-tricks.com/can-get-pretty-far-making-slider-just-html-css/
-            // swipe smoothly on WebKit based mobile browsers
-        }
+        // https://css-tricks.com/can-get-pretty-far-making-slider-just-html-css/
+        // swipe smoothly on WebKit based mobile browsers
+    }
 
-        &-nav.navigate-to-next {
-            grid-column: navigate-to-next-begin / navigate-to-next-end;
-            align-self: center;
-            transform: rotate(225deg);
-        }
+    &-nav.navigate-to-next {
+        grid-column: navigate-to-next-begin / navigate-to-next-end;
+        align-self: center;
+        transform: rotate(225deg);
+    }
 
-        &-slide-group {
-            // min-width: 100%;
-            // display: grid;
-            // /* grid-template-columns: repeat(2, 1fr); */ /*** js ***/
-            // grid-gap: $carousel-slider-grid-gap;
+    &-slide-group {
+        // min-width: 100%;
+        // display: grid;
+        // /* grid-template-columns: repeat(2, 1fr); */ /*** js ***/
+        // grid-gap: $carousel-slider-grid-gap;
 
-            min-width: 100%;
-            display: flex;
-        }
+        min-width: 100%;
+        display: flex;
+    }
 
-        &-slide {
-            background: lightyellow;
+    &-slide {
+        background: lightyellow;
 
-            margin-right: $carousel-slider-grid-gap;
-            flex: 1 1 auto;
-        }
-        &-slide:first-child {
-            background: lightblue;
-        }
-        &-slide:last-child {
-            background: lightgreen;
-            margin-right: 0;
-        }
+        margin-right: $carousel-slider-grid-gap;
+        flex: 1 1 auto;
+    }
+    &-slide:first-child {
+        background: lightblue;
+    }
+    &-slide:last-child {
+        background: lightgreen;
+        margin-right: 0;
     }
 }

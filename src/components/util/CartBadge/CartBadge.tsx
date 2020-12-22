@@ -5,7 +5,7 @@ import './CartBadge.scss';
 /*
  *  Props
     qty: number; Quantity of cart items.
-    outerClazz: string; consumer specified className
+    outerClazz: string; consumer specified css class
 */
 function CartBadge({ qty, outerClazz="" }:{[key:string]:any}) {
     
