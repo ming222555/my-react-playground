@@ -1,6 +1,3 @@
-// import { Reducer } from "redux";
-import { Action } from "redux";
-
 import PayloadAction from './redux-utils/PayloadAction.abstract';
 
 import INEW_CART_ITEM from "ducks/../../backend/src/interfaces/INEW_CART_ITEM.interface";
@@ -15,8 +12,7 @@ const initialState: State = {
 }
 
 const actionTypes = {
-    NEW_CART_ITEM: 'NEW_CART_ITEM',
-    CLEAR_CART_ITEM: 'CLEAR_CART_ITEM'
+    NEW_CART_ITEM: 'NEW_CART_ITEM'
 }
 
 export class NewCartItem implements PayloadAction {
@@ -24,18 +20,12 @@ export class NewCartItem implements PayloadAction {
     constructor(public payload: State) {}
 }
 
-export class ClearCartItem implements Action {
-    type = actionTypes.CLEAR_CART_ITEM;
-}
-
-export type NewCartItemActions = NewCartItem | ClearCartItem; // usage, new NewCartItem({ cartId: 'z', itemId: 'X12', itemName: 'T-Shirt', qty: 9 })
+export type NewCartItemActions = NewCartItem; // usage, new NewCartItem({ cartId: 'z', itemId: 'X12', itemName: 'T-Shirt', qty: 9 })
 
 const newCartItemReducer = (state: any = initialState, action: NewCartItemActions): State => {
     switch (action.type) {
         case (actionTypes.NEW_CART_ITEM):
-            return (action as NewCartItem).payload;
-        case (actionTypes.CLEAR_CART_ITEM):
-            return initialState;
+            return {...state, ...(action as NewCartItem).payload};
         default:
             return state;
     }
