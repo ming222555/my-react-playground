@@ -1,3 +1,4 @@
+import NoAction from './redux-utils/NoAction';
 import PayloadAction from './redux-utils/PayloadAction.abstract';
 
 import INEW_CART_ITEM from "ducks/../../backend/src/interfaces/INEW_CART_ITEM.interface";
@@ -20,9 +21,7 @@ export class NewCartItem implements PayloadAction {
     constructor(public payload: State) {}
 }
 
-export type NewCartItemActions = NewCartItem; // usage, new NewCartItem({ cartId: 'z', itemId: 'X12', itemName: 'T-Shirt', qty: 9 })
-
-const newCartItemReducer = (state: any = initialState, action: NewCartItemActions): State => {
+const newCartItemReducer = (state: any = initialState, action: NewCartItem | NoAction): State => {
     switch (action.type) {
         case (actionTypes.NEW_CART_ITEM):
             return {...state, ...(action as NewCartItem).payload};
