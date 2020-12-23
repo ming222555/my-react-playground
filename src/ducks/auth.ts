@@ -26,9 +26,7 @@ export class SetUnauthenticated implements Action {
     type = actionTypes.SET_UNAUTHENTICATED;
 }
 
-export type AuthActions = SetAuthenticatedWithToken | SetUnauthenticated; // use, new SetAuthenticatedWithToken({ token: '123', email: 'z@z.com' })
-
-const authReducer = (state: any = initialState, action: AuthActions): State => {
+const authReducer = (state: any = initialState, action: SetAuthenticatedWithToken | SetUnauthenticated): State => {
     switch (action.type) {
         case (actionTypes.SET_AUTHENTICATED_WITH_TOKEN):
             return {...state, ...(action as SetAuthenticatedWithToken).payload};
