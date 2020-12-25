@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import './Carousel.scss';
 
 export interface PageProps {
+    outerClazz?: string; // consumer specified css class
     breakpoints: string; /* e.g. "768:4,1200:2" which says 
                             "at viewport >= 768px,  no. of visible items shown in carousel is 4",
                             "at viewport >= 1200px, no. of visible items shown in carousel is 2"
@@ -110,7 +111,7 @@ function recomputeAndSetItemsPerGroupForWindowResize(winWidth: number, arrayBrea
     setter( newPosItemGroup + ',' + newItemsPerGroup);
 };
 
-function Carousel({ breakpoints="", items=[], itemIDs=[]}: PageProps) {
+function Carousel({ outerClazz="", breakpoints="", items=[], itemIDs=[]}: PageProps) {
     
     const prevItemsRef: React.MutableRefObject<{}[]> = useRef(null as any);
     const arrayBreakpointsRef: React.MutableRefObject<IBreakpoints[]> = useRef([]);
@@ -154,11 +155,13 @@ function Carousel({ breakpoints="", items=[], itemIDs=[]}: PageProps) {
         return null;
 
     }
+
+    const carouselClassName = outerClazz ? outerClazz + " Carousel" : "Carousel";
     
     if (posItemGroupConcatItemsPerGroup == ',') {
 
         return (
-            <div className="Carousel">
+            <div className={carouselClassName}>
                 <p className="Carousel__loading">Initializing...</p>
             </div>
         );
@@ -168,7 +171,7 @@ function Carousel({ breakpoints="", items=[], itemIDs=[]}: PageProps) {
     if (prevItemsRef.current != items) {
 
         return (
-            <div className="Carousel">
+            <div className={carouselClassName}>
                 <p className="Carousel__loading">Loading...</p>
             </div>
         );
@@ -209,7 +212,7 @@ function Carousel({ breakpoints="", items=[], itemIDs=[]}: PageProps) {
     const posItemGroup = parseInt( pair[0]);
 
     return (
-        <div className="Carousel">
+        <div className={carouselClassName}>
                 <div className="Carousel__body">
                     <button className={`"Carousel__body-nav navigate-to-previous ${posItemGroup > 0 ? "" : "nav-hidden"}`} onClick={() => recomputeAndSetPosItemGroupForNavOnclick( NavDirection.Prev, window.innerWidth, arrayBreakpointsRef.current, items.length, posItemGroup, itemsPerGroup, setPosItemGroupConcatItemsPerGroup)}></button>
                     <div className="Carousel__body-slider-tube">
