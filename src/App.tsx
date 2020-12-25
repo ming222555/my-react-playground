@@ -124,9 +124,9 @@ function App({ cartId, userEmail }:{[key:string]:any}) {
             <Switch>
                 <Route exact path="/">
                     <AppBody>
-                        <PrimaryHeader {...{ cartId, userEmail }} />
-                        <HomePage />
-                        {null}
+                        <PrimaryHeader {...{ cartId, userEmail }} /> {/* header */}
+                        <HomePage />                                 {/* content */}
+                        {null}                                       {/* footer */}
                     </AppBody>
                 </Route>
                 <Route path="/somePage">
