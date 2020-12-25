@@ -9,28 +9,10 @@
 
     grid-template-areas: "navbar-cell-left navbar-cell-center navbar-cell-right";
 
-    .navbar-toggler {
-        background: yellow;
+    .navbar-toggler.Hamburger {
         grid-area: navbar-cell-left;
         justify-self: start;
         align-self: center;
-        
-        border: none;
-        border-radius: 0;
-    
-        height: 1.5rem;
-        width: 1.5rem;
-    
-        border-top: 2px solid #000000;
-        border-bottom: 2px solid #000000;
-    }
-
-    .navbar-toggler::after {
-        background-color: #000;
-        height: 2px;
-        width: 100%;
-        content: "";
-        display: block;
     }
 
     .navbar-brand.Brand {
@@ -267,32 +249,24 @@
 }
 
 .PrimaryHeader.CartBadge {
-    .CartBadge__icon-container {
-        .CartBadge__icon {
-            width: 1.5rem;
-            height: 1.5rem;
-        }
+    .CartBadge__icon {
+        width: 1.5rem;
+        height: 1.5rem;
     }
-    .CartBadge__qty-container {
-        .CartBadge__qty {
-            font-size: .7rem;
-        }
+    .CartBadge__qty {
+        font-size: .7rem;
     }
 }
 
 @media only screen and (min-width: 75em) { /* 1200px */
 
     .PrimaryHeader.CartBadge {
-        .CartBadge__icon-container {
-            .CartBadge__icon {
-                width: 2.25rem;
-                height: 2.25rem;
-            }
+        .CartBadge__icon {
+            width: 2.25rem;
+            height: 2.25rem;
         }
-        .CartBadge__qty-container {
-            .CartBadge__qty {
-                font-size: .8rem;
-            }
+        .CartBadge__qty {
+            font-size: .8rem;
         }
     }
 

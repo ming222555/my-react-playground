@@ -1,0 +1,27 @@
+.Hamburger {
+    background: transparent;
+    
+    outline: none;
+    border: none;
+    border-radius: 0;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+
+    height: 1.5rem;
+    width: 1.5rem; 
+    
+    border-top: 2px solid #000;
+    border-bottom: 2px solid #000;
+
+    &__hams {
+        border-top: 2px solid #000;
+        border-bottom: 2px solid #000;
+        height: 50%;
+    }
+
+    &:hover {
+        outline: 2px solid rgba(0,0,0,.5);
+        outline-offset: 2px;
+    }
+}

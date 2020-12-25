@@ -3,19 +3,24 @@
 
     &__qty-container {
         position: absolute;
-        color: white;
+
         display: flex;
         align-items: center;
         justify-content: center;
+
         min-height: 50%;
         min-width: 50%;
         top: 0;
         right: 0;
         transform: translateX(25%);
+
+        color: white;
         background: green;
-        border-radius: 25%;
+
         text-align: center;
         text-decoration: none;
+
+        border-radius: 25%;
         padding-left: 3px;
         padding-right: 3px;
     

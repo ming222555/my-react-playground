@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { useStore } from 'react-redux';
 
 import './PrimaryHeader.scss';
-import CartBadge from 'components/util/CartBadge/CartBadge';
 import CartBadgeWrapper from 'componentWrappers/CartBadgeWrapper/CartBadgeWrapper';
 import { NewCartItem } from 'ducks/newCartItem';
 import Brand from 'components/domain/Brand/Brand';
+import Hamburger from 'components/util/Hamburger/Hamburger';
 
 function PrimaryHeader({ cartId, userEmail }:{[key:string]:any}) {
     console.log('function PrimaryHeader');
@@ -22,7 +22,8 @@ function PrimaryHeader({ cartId, userEmail }:{[key:string]:any}) {
     return (
         
         <nav className="navbar primary-navbar">
-            <button className="navbar-toggler" type="button"></button>
+            {/* <button className="navbar-toggler" type="button"></button> */}
+            <Hamburger outerClazz="navbar-toggler" />
             <Brand outerClazz="navbar-brand" />
             <div className="navbar-vert-propup-mobile"><h1>&nbsp;</h1></div>
 
