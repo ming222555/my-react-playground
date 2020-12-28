@@ -34,117 +34,8 @@
         border-bottom: 3px solid transparent;
     }
     
-    .navbar-nav.navbar-nav-main {
+    .navbar-nav.PrimaryMenu {
         display: none;
-        position: relative;
-     
-        .nav-link {
-            padding-left: 1rem;
-            padding-right: 1rem;
-    
-            display: block;
-            padding-top: 1rem;
-            padding-bottom: 1rem;
-    
-            border-top: 3px solid transparent;
-            border-bottom: 3px solid transparent;
-    
-            text-decoration: none;
-        }
-        
-        .nav-link:hover {
-            border-bottom: 3px solid #000;
-        }
-        
-        .nav-item.dropdown:hover .nav-dropdown {
-            display: block;
-        }
-
-        
-        .nav-item.dropdown .nav-dropdown {
-            position: absolute;
-            display: none; /* st ff shows grid line nos. RESTORE!!!!!!!!! */
-            background: yellow;
-            /* left: 0; */
-            /* width: 100%; */
-
-            /* left: -25%;
-            width: 150%; */
-
-            left: 50%;
-            width: 100vw;
-            transform: translateX(-50%);
-
-            .dept-categories {
-                background: #fff;
-
-                display: grid;
-                grid-template-columns: 1fr minmax(22rem, max-content) repeat(2, minmax(min-content, max-content)) 1fr;
-
-                grid-template-areas: ". cell-listing cell-banner cell-banner2 .";
-                grid-gap: 2rem;
-                padding-top: 2rem;
-                padding-bottom: 2rem;
-            }
-            .dept-categories__listing {
-                grid-area: cell-listing;
-                justify-self: right;
-
-                background-color: lightgreen;
-
-                min-width: 60%;
-            }
-            .dept-categories__banner {
-                grid-area: cell-banner;
-                justify-self: center;
-
-                background: red;
-            }
-            .dept-categories__banner2 {
-                grid-area: cell-banner2;
-                justify-self: center;
-
-                background: yellow;
-            }
-            .dept-categories__banner-text {
-                grid-area: cell-banner;
-            }
-            .dept-categories__banner2-text {
-                grid-area: cell-banner2;
-            }
-            .dept-categories__banner-text, .dept-categories__banner2-text {
-                align-self: end;
-                margin: 1rem;
-                padding: .5rem 1rem;
-                background: white;
-
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-            }
-            .dept-categories__banner-text {
-            }
-            .dept-categories__banner2-text {
-            }
-            .dept-categories__caption {
-                font-weight: bold;
-            }
-            .dept-categories__caption::after {
-                content: '\00a0';
-                display: block;
-            }
-            .dept-categories__item {
-            }
-            .dept-categories__link {
-                text-decoration: none;
-
-                line-height: 1.5;
-            }
-            .dept-categories__link:hover {
-                text-decoration: underline;
-            }
-        }
-
     }
     
     .navbar-nav-right {
@@ -286,10 +177,8 @@
             display: none;
         }
     
-        .navbar-nav.navbar-nav-main {
+        .navbar-nav.PrimaryMenu {
             display: flex;
-            align-items: flex-start;
-            background: lightgreen;
             grid-area: navbar-cell-center;
             justify-self: center;
         }

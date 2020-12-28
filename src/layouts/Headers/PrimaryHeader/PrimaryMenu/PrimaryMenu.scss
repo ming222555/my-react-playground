@@ -1,0 +1,125 @@
+.PrimaryMenu {
+    display: flex;
+    align-items: flex-start;
+    background: lightgreen;
+    
+    position: relative;
+    
+    &__menutitle {
+        padding-left: 1rem;
+        padding-right: 1rem;
+
+        display: block;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+
+        border-top: 3px solid transparent;
+        border-bottom: 3px solid transparent;
+
+        text-decoration: none;
+    }
+    
+    &__menutitle:hover {
+        border-bottom: 3px solid #000;
+    }
+    
+    &__menuitem:hover &__menudropdownparent {
+        display: block;
+    }
+
+    
+    &__menuitem &__menudropdownparent {
+        position: absolute;
+        display: none; /* st ff shows grid line nos. RESTORE!!!!!!!!! */
+        background: yellow;
+        /* left: 0; */
+        /* width: 100%; */
+
+        /* left: -25%;
+        width: 150%; */
+
+        left: 50%;
+        width: 100vw;
+        transform: translateX(-50%);
+    }
+
+    
+    &__menudropdown {
+        background: #fff;
+
+        display: grid;
+        grid-template-columns: 1fr minmax(22rem, max-content) repeat(2, minmax(min-content, max-content)) 1fr;
+
+        grid-template-areas: ". cell-listing cell-banner cell-banner2 .";
+        grid-gap: 2rem;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+    &__departments {
+        grid-area: cell-listing;
+        justify-self: right;
+
+        background-color: lightgreen;
+
+        min-width: 60%;
+    }
+    &__banner {
+        grid-area: cell-banner;
+        justify-self: center;
+
+        background: red;
+    }
+    &__banner2 {
+        grid-area: cell-banner2;
+        justify-self: center;
+
+        background: yellow;
+    }
+    &__bannertext {
+        grid-area: cell-banner;
+    }
+    &__bannertext2 {
+        grid-area: cell-banner2;
+    }
+    &__bannertext, &__bannertext2 {
+        align-self: end;
+        margin: 1rem;
+        padding: .5rem 1rem;
+        background: white;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    &__bannertext {
+    }
+    &__bannertext2 {
+    }
+    &__department-caption {
+        font-weight: bold;
+    }
+    &__department-caption::after {
+        content: '\00a0';
+        display: block;
+    }
+    &__department {
+    }
+    &__department-link {
+        text-decoration: none;
+
+        line-height: 1.5;
+    }
+    &__department-link:hover {
+        text-decoration: underline;
+    }
+}
+
+@media only screen and (min-width: 75em) { /* 1200px */
+    .PrimaryMenu {
+        display: flex;
+        align-items: flex-start;
+        background: lightgreen;
+        grid-area: navbar-cell-center;
+        justify-self: center;
+    }
+}

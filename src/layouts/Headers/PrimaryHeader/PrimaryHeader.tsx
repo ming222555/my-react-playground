@@ -6,6 +6,7 @@ import CartBadgeWrapper from 'componentWrappers/CartBadgeWrapper/CartBadgeWrappe
 import { NewCartItem } from 'ducks/newCartItem';
 import Brand from 'components/domain/Brand/Brand';
 import Hamburger from 'components/util/Hamburger/Hamburger';
+import PrimaryMenu from './PrimaryMenu/PrimaryMenu';
 
 function PrimaryHeader({ cartId, userEmail }:{[key:string]:any}) {
     console.log('function PrimaryHeader');
@@ -22,107 +23,11 @@ function PrimaryHeader({ cartId, userEmail }:{[key:string]:any}) {
     return (
         
         <nav className="navbar primary-navbar">
-            {/* <button className="navbar-toggler" type="button"></button> */}
             <Hamburger outerClazz="navbar-toggler" />
             <Brand outerClazz="navbar-brand" />
             <div className="navbar-vert-propup-mobile"><h1>&nbsp;</h1></div>
 
-            <ul className="navbar-nav navbar-nav-main">
-                <li className="nav-item dropdown">
-                    <h1><a className="nav-link" href="#">WOMEN</a></h1>
-                    <div className="nav-dropdown">
-                        <div className="dept-categories">
-                            <ul className="dept-categories__listing" role="navigation">
-                                {/* <!-- Listing WOMEN cats --> */}
-                                <li className="dept-categories__item"><h3 className="dept-categories__caption">CATEGORIES</h3></li>
-                                <li className="dept-categories__item"><a className="dept-categories__link" href="#">SKIRTS</a></li>
-                                <li className="dept-categories__item"><a className="dept-categories__link" href="#">DRESSES</a></li>
-                                <li className="dept-categories__item"><a className="dept-categories__link" href="#">SHIRTS AND BLOUSES</a></li>
-                                <li className="dept-categories__item"><a className="dept-categories__link" href="#">SWEATERS</a></li>
-                                <li className="dept-categories__item"><a className="dept-categories__link" href="#">TOPS AND T-SHIRTS</a></li>
-                                <li className="dept-categories__item"><a className="dept-categories__link" href="#">JACKETS AND COATS</a></li>
-                            </ul>
-                            <div className="dept-categories__banner">
-                                {/* <!-- Banner WOMEN --> */}
-                                <img src="./women-new-collection.jpg" />
-                            </div>
-                            <div className="dept-categories__banner2">
-                                {/* <!-- Banner2 WOMEN --> */}
-                                <img src="./women-special-offers.jpg" />
-                            </div>
-                            <div className="dept-categories__banner-text">
-                                <span>New Collection</span>
-                                <span>Summer 2019</span>
-                            </div>
-                            <div className="dept-categories__banner2-text">
-                                <span>Special Offers</span>
-                                <span>Get up to 30% off</span>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li className="nav-item dropdown">
-                    <h1><a className="nav-link" href="#">MEN</a></h1>
-                    <div className="nav-dropdown">
-                        <div className="dept-categories">
-                            <ul className="dept-categories__listing" role="navigation">
-                                {/* <!-- Listing MEN cats --> */}
-                                <li className="dept-categories__item"><h3 className="dept-categories__caption">CATEGORIES</h3></li>
-                                <li className="dept-categories__item"><a className="dept-categories__link" href="#">SHIRTS</a></li>
-                                <li className="dept-categories__item"><a className="dept-categories__link" href="#">T-SHIRTS</a></li>
-                                <li className="dept-categories__item"><a className="dept-categories__link" href="#">SWEATERS</a></li>
-                                <li className="dept-categories__item"><a className="dept-categories__link" href="#">JACKETS AND COATS</a></li>
-                            </ul>
-                            <div className="dept-categories__banner">
-                                {/* <!-- Banner MEN --> */}
-                                <img src="./men-new-collection.jpg" />
-                            </div>
-                            <div className="dept-categories__banner2">
-                                {/* <!-- Banner2 MEN --> */}
-                                <img src="./men-special-offers.jpg" />
-                            </div>
-                            <div className="dept-categories__banner-text">
-                                <span>New Collection</span>
-                                <span>Summer 2019</span>
-                            </div>
-                            <div className="dept-categories__banner2-text">
-                                <span>Special Offers</span>
-                                <span>Get up to 30% off</span>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li className="nav-item dropdown">
-                    <h1><a className="nav-link" href="#">SPORTSWEAR</a></h1>
-                    <div className="nav-dropdown">
-                        <div className="dept-categories">
-                            <ul className="dept-categories__listing" role="navigation">
-                                {/* <!-- Listing SPORTSWEAR cats --> */}
-                                <li className="dept-categories__item"><h3 className="dept-categories__caption">CATEGORIES</h3></li>
-                                <li className="dept-categories__item"><a className="dept-categories__link" href="#">TOPS</a></li>
-                                <li className="dept-categories__item"><a className="dept-categories__link" href="#">SWEATSHIRTS</a></li>
-                                <li className="dept-categories__item"><a className="dept-categories__link" href="#">PANTS</a></li>
-                            </ul>
-                            <div className="dept-categories__banner">
-                                {/* <!-- Banner SPORTSWEAR --> */}
-                                <img src="./sportswear-new-collection.jpg" />
-                            </div>
-                            <div className="dept-categories__banner2">
-                                {/* <!-- Banner2 SPORTSWEAR --> */}
-                                <img src="./sportswear-special-offers.jpg" />
-                            </div>
-                            <div className="dept-categories__banner-text">
-                                <span>New Collection</span>
-                                <span>Summer 2019</span>
-                            </div>
-                            <div className="dept-categories__banner2-text">
-                                <span>Special Offers</span>
-                                <span>Get up to 30% off</span>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-            </ul>
+            <PrimaryMenu outerClazz="navbar-nav" />
             <ul className="navbar-nav navbar-nav-right">
                 <li className="nav-item navbar-nav-right__menu navbar-nav-right__search-menu">
                     <a className="nav-link navbar-nav-right__icon-link navbar-nav-right__search-icon-link" href="#">
