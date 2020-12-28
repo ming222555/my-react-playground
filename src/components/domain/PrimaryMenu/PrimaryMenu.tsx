@@ -8,7 +8,7 @@ function PrimaryMenu({ outerClazz=""}:{[key:string]:any}) {
         
         <ul className={outerClazz ? outerClazz + " PrimaryMenu" : "PrimaryMenu"}>
             <li className="PrimaryMenu__menuitem">
-                <h1><a className="PrimaryMenu__menutitle" href="#">WOMEN</a></h1>
+                <a className="PrimaryMenu__menutitle" href="#">WOMEN</a>
                 <div className="PrimaryMenu__menudropdownparent">
                     <div className="PrimaryMenu__menudropdown">
                         <ul className="PrimaryMenu__departments" role="navigation">
@@ -23,7 +23,7 @@ function PrimaryMenu({ outerClazz=""}:{[key:string]:any}) {
                         </ul>
                         <div className="PrimaryMenu__banner">
                             {/* <!-- Banner WOMEN --> */}
-                            <img src={`${process.env.REACT_APP_IMAGES_PATH}women-new-collection.jpg`} />   {/* <img src="./women-new-collection.jpg" /> */}
+                            <img src={`${process.env.REACT_APP_IMAGES_PATH}women-new-collection.jpg`} />
                         </div>
                         <div className="PrimaryMenu__banner2">
                             {/* <!-- Banner2 WOMEN --> */}
@@ -41,7 +41,7 @@ function PrimaryMenu({ outerClazz=""}:{[key:string]:any}) {
                 </div>
             </li>
             <li className="PrimaryMenu__menuitem">
-                <h1><a className="PrimaryMenu__menutitle" href="#">MEN</a></h1>
+                <a className="PrimaryMenu__menutitle" href="#">MEN</a>
                 <div className="PrimaryMenu__menudropdownparent">
                     <div className="PrimaryMenu__menudropdown">
                         <ul className="PrimaryMenu__departments" role="navigation">
@@ -72,7 +72,7 @@ function PrimaryMenu({ outerClazz=""}:{[key:string]:any}) {
                 </div>
             </li>
             <li className="PrimaryMenu__menuitem">
-                <h1><a className="PrimaryMenu__menutitle" href="#">SPORTSWEAR</a></h1>
+                <a className="PrimaryMenu__menutitle" href="#">SPORTSWEAR</a>
                 <div className="PrimaryMenu__menudropdownparent">
                     <div className="PrimaryMenu__menudropdown">
                         <ul className="PrimaryMenu__departments" role="navigation">
