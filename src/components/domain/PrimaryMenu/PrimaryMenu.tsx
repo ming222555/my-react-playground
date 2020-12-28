@@ -7,11 +7,11 @@ function PrimaryMenu({ outerClazz=""}:{[key:string]:any}) {
     return (
         
         <ul className={outerClazz ? outerClazz + " PrimaryMenu" : "PrimaryMenu"}>
-            <li className="PrimaryMenu__menuitem"> {/* nav-item dropdown */} {/* done */}
-                <h1><a className="PrimaryMenu__menutitle" href="#">WOMEN</a></h1> {/* nav-link */} {/* done */}
-                <div className="PrimaryMenu__menudropdownparent">  {/* done */}
-                    <div className="PrimaryMenu__menudropdown">  {/* done */}
-                        <ul className="PrimaryMenu__departments" role="navigation">  {/* done */}
+            <li className="PrimaryMenu__menuitem">
+                <h1><a className="PrimaryMenu__menutitle" href="#">WOMEN</a></h1>
+                <div className="PrimaryMenu__menudropdownparent">
+                    <div className="PrimaryMenu__menudropdown">
+                        <ul className="PrimaryMenu__departments" role="navigation">
                             {/* <!-- Listing WOMEN cats --> */}
                             <li className="PrimaryMenu__department"><h3 className="PrimaryMenu__department-caption">CATEGORIES</h3></li>
                             <li className="PrimaryMenu__department"><a className="PrimaryMenu__department-link" href="#">SKIRTS</a></li>
@@ -33,7 +33,7 @@ function PrimaryMenu({ outerClazz=""}:{[key:string]:any}) {
                             <span>New Collection</span>
                             <span>Summer 2019</span>
                         </div>
-                        <div className="PrimaryMenu__bannertext2">  {/* done */}
+                        <div className="PrimaryMenu__bannertext2">
                             <span>Special Offers</span>
                             <span>Get up to 30% off</span>
                         </div>

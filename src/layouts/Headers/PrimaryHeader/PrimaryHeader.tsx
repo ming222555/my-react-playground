@@ -6,7 +6,7 @@ import CartBadgeWrapper from 'componentWrappers/CartBadgeWrapper/CartBadgeWrappe
 import { NewCartItem } from 'ducks/newCartItem';
 import Brand from 'components/domain/Brand/Brand';
 import Hamburger from 'components/util/Hamburger/Hamburger';
-import PrimaryMenu from './PrimaryMenu/PrimaryMenu';
+import PrimaryMenu from 'components/domain/PrimaryMenu/PrimaryMenu';
 
 function PrimaryHeader({ cartId, userEmail }:{[key:string]:any}) {
     console.log('function PrimaryHeader');
