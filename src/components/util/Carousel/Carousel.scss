@@ -5,7 +5,7 @@ $carousel-slider-grid-gap: 1rem;
 
 .Carousel__body {
     overflow-x: hidden; // overflowX due to transform: rotate(225deg) of .navigate-to-next
-
+    overflow-y: hidden;
     margin-top: 1rem;
     background: green;
     display: grid;
